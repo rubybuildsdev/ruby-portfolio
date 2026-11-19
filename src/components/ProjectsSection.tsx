@@ -61,25 +61,52 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
                   <span className="text-[10px] font-black uppercase tracking-wider bg-black/60 text-[#CCFF00] px-3 py-1 rounded-full border border-white/10 group-hover:border-[#CCFF00]/40 transition-colors">
                     {project.category}
                   </span>
-                  {project.badge && (
+                  {project.demoUrl ? (
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-black px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 group-hover:scale-105 transition-transform">
+                      <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+                      <span>DEPLOYED</span>
+                    </span>
+                  ) : project.badge ? (
                     <span className="text-[10px] font-extrabold uppercase bg-[#CCFF00] text-black px-2.5 py-0.5 rounded-full shadow-sm group-hover:scale-105 transition-transform">
                       {project.badge}
                     </span>
-                  )}
+                  ) : null}
                 </div>
 
                 {/* Project Image Preview Cover with Hover Zoom & Shine */}
                 {project.image && (
-                  <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/20 bg-black/50 relative shadow-inner group/img">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover object-top group-hover:scale-108 transition-transform duration-700 ease-out"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
-                    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                  </div>
+                  project.demoUrl ? (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/20 bg-black/50 relative shadow-inner group/img cursor-pointer"
+                      title="Open Live App"
+                    >
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top group-hover/img:scale-108 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+                      <div className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md border border-white/20 text-[#CCFF00] text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 shadow-md">
+                        <span>Live Demo</span>
+                        <ExternalLink className="w-3 h-3 text-[#CCFF00]" />
+                      </div>
+                    </a>
+                  ) : (
+                    <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/20 bg-black/50 relative shadow-inner group/img">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top group-hover:scale-108 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+                      <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                  )
                 )}
 
                 {/* Project Title & Tagline */}
@@ -120,29 +147,43 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
                 </div>
 
                 {/* Action Links with Spring Click Physics */}
-                <div className="flex items-center gap-3 pt-4 border-t border-white/15">
-                  <motion.a
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.96 }}
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-[#CCFF00] transition-colors shadow-md"
-                  >
-                    <Github className="w-4 h-4" />
-                    <span>Source Code</span>
-                  </motion.a>
-                  {project.demoUrl && project.demoUrl !== '#' && (
+                <div className="flex items-center gap-2.5 pt-4 border-t border-white/15">
+                  {project.demoUrl && project.demoUrl !== '#' ? (
+                    <>
+                      <motion.a
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.96 }}
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#CCFF00] text-black font-black text-xs hover:bg-white transition-colors shadow-md group/btn"
+                      >
+                        <ExternalLink className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                        <span>Live Demo</span>
+                      </motion.a>
+                      <motion.a
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.96 }}
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/15 border border-white/25 text-white font-black text-xs hover:bg-white hover:text-black transition-colors"
+                      >
+                        <Github className="w-4 h-4" />
+                        <span>Source Code</span>
+                      </motion.a>
+                    </>
+                  ) : (
                     <motion.a
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      href={project.demoUrl}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.96 }}
+                      href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2.5 rounded-xl border border-white/30 text-white hover:bg-white hover:text-black transition-colors"
-                      title="View Live Demo"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-[#CCFF00] transition-colors shadow-md"
                     >
-                      <ExternalLink className="w-4 h-4" />
+                      <Github className="w-4 h-4" />
+                      <span>Source Code</span>
                     </motion.a>
                   )}
                 </div>

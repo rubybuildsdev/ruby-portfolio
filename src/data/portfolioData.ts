@@ -106,7 +106,7 @@ export const portfolioConfig = {
       description: "An interactive 3D Rubik's Cube application featuring cube simulation, Kociemba Two-Phase solving algorithm, and beginner-friendly learning tools.",
       tags: ["React", "Three.js", "Tailwind CSS", "Vite", "Vitest"],
       githubUrl: "https://github.com/rubybuildsdev/cube.git",
-      demoUrl: "",
+      demoUrl: "https://cubesolving.vercel.app",
       image: "/images/projects/cube-solver/gif-cube-solver.gif",
       badge: "FEATURED",
       highlight: "3D Simulation & Kociemba Solver"
