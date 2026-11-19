@@ -98,15 +98,7 @@ const CORE_TECHNOLOGIES: TechItem[] = [
   },
 ];
 
-interface ProfileSectionProps {
-  isEscaped?: boolean;
-  onToggleEscape?: () => void;
-}
-
-export const ProfileSection: React.FC<ProfileSectionProps> = ({
-  isEscaped: _isEscaped = false,
-  onToggleEscape: _onToggleEscape = () => {}
-}) => {
+export const ProfileSection: React.FC = () => {
   return (
     <section
       id="profile"
@@ -140,7 +132,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7 }}
-          className="bg-[#F8F9FA] rounded-[2.5rem] md:rounded-[3.2rem] p-6 sm:p-10 md:p-14 border-2 border-gray-200/90 shadow-[10px_10px_0px_#0038FF] hover:border-black transition-all duration-300 relative"
+          className="bg-[#F8F9FA] rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.2rem] p-5 sm:p-8 md:p-14 border-2 border-gray-200/90 shadow-[6px_6px_0px_#0038FF] sm:shadow-[10px_10px_0px_#0038FF] hover:border-black transition-all duration-300 relative"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
@@ -180,27 +172,27 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-2.5">
                   {CORE_TECHNOLOGIES.map((tech) => {
                     const IconComponent = tech.Icon;
                     return (
                       <div
                         key={tech.name}
-                        className="group flex items-center gap-3 bg-white border-2 border-gray-200/80 hover:border-black hover:shadow-[3px_3px_0px_#0038FF] hover:-translate-y-0.5 p-2 rounded-2xl transition-all duration-200 cursor-default"
+                        className="group flex items-center gap-2 sm:gap-3 bg-white border-2 border-gray-200/80 hover:border-black hover:shadow-[3px_3px_0px_#0038FF] hover:-translate-y-0.5 p-1.5 sm:p-2 rounded-2xl transition-all duration-200 cursor-default min-w-0"
                       >
                         {/* Dedicated Squircle Frame with Brand Tint */}
                         <div
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center p-1.5 shrink-0 border ${tech.tintBg} ${tech.tintBorder} group-hover:scale-105 transition-transform duration-200 shadow-2xs`}
+                          className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center p-1 sm:p-1.5 shrink-0 border ${tech.tintBg} ${tech.tintBorder} group-hover:scale-105 transition-transform duration-200 shadow-2xs`}
                         >
-                          <IconComponent className="w-5 h-5" />
+                          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                         </div>
 
                         {/* Name and Role Subtitle */}
-                        <div className="min-w-0 flex flex-col">
+                        <div className="min-w-0 flex flex-col overflow-hidden">
                           <span className="font-black text-xs text-black tracking-tight leading-snug truncate">
                             {tech.name}
                           </span>
-                          <span className="text-[10px] font-bold text-black/45 tracking-tight leading-none truncate">
+                          <span className="text-[9px] sm:text-[10px] font-bold text-black/45 tracking-tight leading-none truncate">
                             {tech.role}
                           </span>
                         </div>
@@ -211,10 +203,10 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-gray-200/80">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-4 border-t border-gray-200/80">
                 <a
                   href="#playground"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#0038FF] text-white font-black text-xs md:text-sm hover:bg-[#CCFF00] hover:text-black transition-colors shadow-sm"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full bg-[#0038FF] text-white font-black text-xs md:text-sm hover:bg-[#CCFF00] hover:text-black transition-colors shadow-sm"
                 >
                   <Terminal className="w-4 h-4" />
                   <span>Try Live Playground</span>
@@ -224,7 +216,7 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                   href={portfolioConfig.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-black bg-white text-black font-bold text-xs md:text-sm hover:bg-black hover:text-white transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full border-2 border-black bg-white text-black font-bold text-xs md:text-sm hover:bg-black hover:text-white transition-colors"
                 >
                   <GithubIcon className="w-4 h-4" />
                   <span>GitHub Activity</span>

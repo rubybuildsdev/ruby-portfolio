@@ -5,4 +5,32 @@ html, body, #root {
   padding: 0;
   width: 100%;
   min-height: 100%;
+  overflow-x: clip;
+}
+
+/* Responsive Neo-Brutalist Heading Extrusion */
+.hero-heading-shadow {
+  font-family: "Arial Black", Impact, sans-serif;
+  text-shadow: 1px 1px 0 #001A99, 2px 2px 0 #001A99, 3px 3px 0 #001A99, 4px 4px 0 #001A99, 5px 5px 0 #001A99, 6px 6px 0 #001A99;
+}
+
+@media (min-width: 640px) {
+  .hero-heading-shadow {
+    text-shadow: 1px 1px 0 #001A99, 2px 2px 0 #001A99, 3px 3px 0 #001A99, 4px 4px 0 #001A99, 5px 5px 0 #001A99, 6px 6px 0 #001A99, 7px 7px 0 #001A99, 8px 8px 0 #001A99, 9px 9px 0 #001A99, 10px 10px 0 #001A99;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-heading-shadow {
+    text-shadow: 1px 1px 0 #001A99, 2px 2px 0 #001A99, 3px 3px 0 #001A99, 4px 4px 0 #001A99, 5px 5px 0 #001A99, 6px 6px 0 #001A99, 7px 7px 0 #001A99, 8px 8px 0 #001A99, 9px 9px 0 #001A99, 10px 10px 0 #001A99, 11px 11px 0 #001A99, 12px 12px 0 #001A99, 13px 13px 0 #001A99, 14px 14px 0 #001A99;
+  }
+}
+
+/* Custom utility for clean mobile scrolling */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

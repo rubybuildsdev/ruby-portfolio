@@ -12,24 +12,10 @@ export const ArrowGreenRight = () => (
   </svg>
 );
 
-export const ArrowBlack1 = () => (
-  <svg viewBox="0 0 100 100" className="w-full h-full text-black stroke-current overflow-visible" fill="none" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20,80 Q 40,20 80,40" />
-    <path d="M60,20 L80,40 L50,60" />
-  </svg>
-);
-
-export const ArrowBlack2 = () => (
-  <svg viewBox="0 0 100 100" className="w-full h-full text-black stroke-current overflow-visible" fill="none" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20,80 Q 40,20 80,40" />
-    <path d="M60,20 L80,40 L50,60" />
-  </svg>
-);
-
 export const CircularBadge = ({ text = "OPEN TO LEARN • EXPLORE MY WORK • " }: { text?: string }) => (
   <a 
     href="#projects"
-    className="relative w-28 h-28 md:w-36 md:h-36 bg-[#CCFF00] rounded-full flex items-center justify-center shadow-xl rotate-12 hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-pointer border-[3px] border-black/10 group"
+    className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 bg-[#CCFF00] rounded-full flex items-center justify-center shadow-xl rotate-12 hover:scale-110 hover:rotate-6 transition-all duration-300 cursor-pointer border-[2px] sm:border-[3px] border-black/10 group"
   >
     <div className="absolute inset-1 animate-[spin_12s_linear_infinite]">
       <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -42,7 +28,7 @@ export const CircularBadge = ({ text = "OPEN TO LEARN • EXPLORE MY WORK • " 
       </svg>
     </div>
     <div className="absolute inset-0 flex items-center justify-center group-hover:translate-y-1 transition-transform">
-      <svg viewBox="0 0 100 100" className="w-10 h-10 text-black stroke-current overflow-visible" fill="none" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 100 100" className="w-6 h-6 sm:w-10 sm:h-10 text-black stroke-current overflow-visible" fill="none" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M50,20 L50,75 M30,55 L50,75 L70,55" />
       </svg>
     </div>

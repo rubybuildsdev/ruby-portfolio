@@ -22,7 +22,6 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
 
   // UPGRADE 1 — Auto-demo state
   const [isAutoDemo, setIsAutoDemo] = useState(true);
-  const [_autoInterrupted, setAutoInterrupted] = useState(false);
   const autoDemoTimers = useRef<number[]>([]);
   const autoDemoStarted = useRef(false);
 
@@ -405,7 +404,6 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
   const interruptAutoDemo = useCallback(() => {
     if (!isAutoDemo) return;
     setIsAutoDemo(false);
-    setAutoInterrupted(true);
     // Clear all pending auto-demo timers
     autoDemoTimers.current.forEach((id) => clearTimeout(id));
     autoDemoTimers.current = [];
@@ -605,7 +603,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           <div 
             ref={logsContainerRef}
             onClick={() => inputRef.current?.focus()}
-            className="p-4 md:p-6 min-h-[300px] max-h-[440px] overflow-y-auto space-y-3 font-mono cursor-text scroll-smooth"
+            className="p-4 md:p-6 min-h-[250px] sm:min-h-[300px] max-h-[380px] sm:max-h-[440px] overflow-y-auto space-y-3 font-mono cursor-text scroll-smooth"
           >
             {outputs.map((out) => (
               <div key={out.id} className="animate-in fade-in duration-200">

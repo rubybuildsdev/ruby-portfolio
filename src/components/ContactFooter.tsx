@@ -25,9 +25,9 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
       <div className="max-w-5xl mx-auto relative z-10 flex flex-col items-center text-center">
         
         {/* Top Sticker Badge */}
-        <div className="inline-flex items-center gap-2 bg-[#CCFF00] text-black font-black text-xs px-4 py-2 rounded-full uppercase tracking-wider mb-6 rotate-[-2deg] shadow-lg">
-          <Sparkles className="w-4 h-4" />
-          <span>Always Open For Mentorship & Learning</span>
+        <div className="inline-flex items-center gap-2 bg-[#CCFF00] text-black font-black text-[11px] sm:text-xs px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full uppercase tracking-wider mb-6 rotate-[-2deg] shadow-lg max-w-[calc(100vw-2rem)] text-center">
+          <Sparkles className="w-4 h-4 shrink-0" />
+          <span className="truncate sm:overflow-visible">Always Open For Mentorship & Learning</span>
         </div>
 
         {/* Big Heading */}
@@ -39,19 +39,19 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
         </p>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mb-14 sm:mb-16 w-full max-w-sm sm:max-w-none">
           <a
             href={portfolioConfig.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-black font-black text-sm md:text-base hover:bg-[#CCFF00] transition-all shadow-xl hover:scale-105"
+            className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-black font-black text-sm md:text-base hover:bg-[#CCFF00] transition-all shadow-xl hover:scale-105"
           >
             <Github className="w-5 h-5" />
             <span>GitHub Profile</span>
           </a>
           <a
             href={`mailto:${portfolioConfig.email}`}
-            className="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-transparent border-2 border-white text-white font-black text-sm md:text-base hover:bg-white hover:text-[#0038FF] transition-all shadow-xl hover:scale-105"
+            className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-transparent border-2 border-white text-white font-black text-sm md:text-base hover:bg-white hover:text-[#0038FF] transition-all shadow-xl hover:scale-105"
           >
             <Mail className="w-5 h-5" />
             <span>Send Email</span>
@@ -68,7 +68,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
           </div>
 
           <div className="flex items-center gap-4">
-            <a href="#stack" className="hover:text-white transition-colors">Stack</a>
+            <a href="#profile" className="hover:text-white transition-colors">Profile</a>
             <a href="#projects" className="hover:text-white transition-colors">Projects</a>
             <a href="#journey" className="hover:text-white transition-colors">Journey</a>
             <button

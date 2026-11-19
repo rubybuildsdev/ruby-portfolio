@@ -27,7 +27,8 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
       );
 
       let overBright = false;
-      for (const section of brightSections) {
+      for (let i = 0; i < brightSections.length; i++) {
+        const section = brightSections[i];
         const rect = section.getBoundingClientRect();
         // Trigger bright theme proactively when section overlaps navbar vertical bounds
         if (rect.top <= navBottom - 10 && rect.bottom >= navTop + 10) {
@@ -84,6 +85,25 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
     };
   }, []);
 
+  // Close mobile menu on Escape key or outside click
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navContainerRef.current && !navContainerRef.current.contains(e.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
   const navLinks = [
     { label: 'Profile', href: '#profile', id: 'profile' },
     { label: 'Projects', href: '#projects', id: 'projects' },
@@ -95,12 +115,12 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
   return (
     <header
       ref={navContainerRef}
-      className="sticky top-3 md:top-4 z-40 px-4 md:px-8 max-w-[1440px] mx-auto w-full transition-all duration-300 pointer-events-auto"
+      className="sticky top-3 md:top-4 z-40 px-3 sm:px-4 md:px-8 max-w-[1440px] mx-auto w-full transition-all duration-300 pointer-events-auto"
     >
       <nav className="relative z-30 w-full">
         {/* Main Floating Navbar Pill */}
         <div
-          className={`flex items-center justify-between px-5 py-3 md:px-7 md:py-3.5 w-full backdrop-blur-xl rounded-full md:rounded-[2.4rem] transition-all duration-300 ${
+          className={`flex items-center justify-between px-3.5 sm:px-5 py-2.5 sm:py-3 md:px-7 md:py-3.5 w-full backdrop-blur-xl rounded-full md:rounded-[2.4rem] transition-all duration-300 ${
             isBright
               ? 'bg-white/70 border border-neutral-900/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
               : theme === 'cyber'
@@ -195,7 +215,7 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div
-            className={`absolute top-full left-4 right-4 mt-2 backdrop-blur-2xl border rounded-2xl p-5 shadow-2xl flex flex-col gap-2.5 z-50 md:hidden animate-in fade-in slide-in-from-top-4 duration-200 ${
+            className={`absolute top-full left-0 right-0 mt-2 backdrop-blur-2xl border rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col gap-2 z-50 md:hidden animate-in fade-in slide-in-from-top-4 duration-200 ${
               isBright
                 ? 'bg-white/85 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.12)]'
                 : theme === 'cyber'

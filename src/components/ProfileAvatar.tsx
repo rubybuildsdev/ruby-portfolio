@@ -10,20 +10,20 @@ export const ProfileAvatar: React.FC = () => {
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        className="group relative w-full h-[380px] sm:h-[420px] max-w-[340px] cursor-pointer"
+        className="group relative w-full h-[300px] sm:h-[380px] md:h-[420px] max-w-[280px] sm:max-w-[320px] md:max-w-[340px] cursor-pointer"
       >
         {/* Layer 1: Electric Blue Offset Shadow */}
         <div 
-          className="absolute inset-0 bg-[#0038FF] rounded-[2.5rem] transform translate-x-3 translate-y-3 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-300 pointer-events-none"
+          className="absolute inset-0 bg-[#0038FF] rounded-[2rem] sm:rounded-[2.5rem] transform translate-x-2 translate-y-2 sm:translate-x-3 sm:translate-y-3 group-hover:translate-x-3.5 group-hover:translate-y-3.5 transition-transform duration-300 pointer-events-none"
         />
 
         {/* Layer 2: Neon Volt Offset Shadow */}
         <div 
-          className="absolute inset-0 bg-[#CCFF00] rounded-[2.5rem] transform -translate-x-2 -translate-y-2 group-hover:-translate-x-3 group-hover:-translate-y-3 transition-transform duration-300 pointer-events-none"
+          className="absolute inset-0 bg-[#CCFF00] rounded-[2rem] sm:rounded-[2.5rem] transform -translate-x-1.5 -translate-y-1.5 sm:-translate-x-2 sm:-translate-y-2 group-hover:-translate-x-2.5 group-hover:-translate-y-2.5 transition-transform duration-300 pointer-events-none"
         />
 
         {/* Layer 3: Main Avatar Box Frame with 3px Black Border */}
-        <div className="relative w-full h-full rounded-[2.3rem] border-3 border-black bg-[#121624] overflow-hidden shadow-2xl z-10 flex items-center justify-center">
+        <div className="relative w-full h-full rounded-[1.8rem] sm:rounded-[2.3rem] border-3 border-black bg-[#121624] overflow-hidden shadow-2xl z-10 flex items-center justify-center">
           
           {/* Profile Photo - Clean, crisp, no grid overlay, no cutout fringe */}
           <img

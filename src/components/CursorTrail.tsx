@@ -22,15 +22,26 @@ export const CursorTrail: React.FC = () => {
       return;
     }
 
+    let rafId: number | null = null;
+    let lastX = 0;
+    let lastY = 0;
+
     const handleMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       setIsVisible(true);
+      lastX = e.clientX;
+      lastY = e.clientY;
 
-      setPoints((prev) => [
-        { x: e.clientX, y: e.clientY },
-        ...prev.slice(0, 7), // trail of 8 dots
-      ]);
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          setPoints((prev) => [
+            { x: lastX, y: lastY },
+            ...prev.slice(0, 7), // trail of 8 dots
+          ]);
+          rafId = null;
+        });
+      }
     };
 
     const handleMouseLeave = () => {
@@ -57,6 +68,7 @@ export const CursorTrail: React.FC = () => {
     window.addEventListener('mouseover', handleMouseOver);
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('mouseover', handleMouseOver);

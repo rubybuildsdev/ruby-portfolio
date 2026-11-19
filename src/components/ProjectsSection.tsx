@@ -44,7 +44,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
         </motion.div>
 
         {/* Projects Grid with Staggered Scroll Entrance */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {portfolioConfig.projects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -157,18 +157,19 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-16 text-center"
+          className="mt-12 sm:mt-16 text-center px-2"
         >
           <motion.a
-            whileHover={{ scale: 1.06, rotate: 1 }}
+            whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             href={portfolioConfig.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#CCFF00] text-black font-black text-sm md:text-base hover:bg-white transition-all shadow-xl hover:shadow-[0_0_25px_rgba(204,255,0,0.6)]"
+            className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-8 py-3 sm:py-4 rounded-full bg-[#CCFF00] text-black font-black text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-xl hover:shadow-[0_0_25px_rgba(204,255,0,0.6)] max-w-full"
           >
-            <Github className="w-5 h-5" />
-            <span>Explore All Repositories on GitHub (@{portfolioConfig.githubUsername})</span>
+            <Github className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+            <span className="sm:hidden">Explore Repositories (@{portfolioConfig.githubUsername})</span>
+            <span className="hidden sm:inline">Explore All Repositories on GitHub (@{portfolioConfig.githubUsername})</span>
           </motion.a>
         </motion.div>
 

@@ -5,11 +5,6 @@ import { ArrowGreenLeft, ArrowGreenRight, CircularBadge } from './SvgAccents';
 import { GithubIcon, ReactIcon, NodeJsIcon } from './Icons';
 import { Typewriter } from './Typewriter';
 
-const shadowStyle = {
-  fontFamily: '"Arial Black", Impact, sans-serif',
-  textShadow: '1px 1px 0 #001A99, 2px 2px 0 #001A99, 3px 3px 0 #001A99, 4px 4px 0 #001A99, 5px 5px 0 #001A99, 6px 6px 0 #001A99, 7px 7px 0 #001A99, 8px 8px 0 #001A99, 9px 9px 0 #001A99, 10px 10px 0 #001A99, 11px 11px 0 #001A99, 12px 12px 0 #001A99, 13px 13px 0 #001A99, 14px 14px 0 #001A99'
-};
-
 // Component for typewriter-style heading reveal
 const TypingHeading: React.FC<{
   text: string;
@@ -40,13 +35,12 @@ const TypingHeading: React.FC<{
 
   return (
     <div className="inline-flex items-baseline">
-      <h1 className={`${className} ${textColorClass}`} style={shadowStyle}>
+      <h1 className={`${className} ${textColorClass} hero-heading-shadow`}>
         {text.slice(0, displayedLength)}
       </h1>
       {isTyping && (
         <span 
-          className="text-[#CCFF00] font-black text-[clamp(3rem,9vw,120px)] leading-none ml-1 animate-pulse"
-          style={{ textShadow: '2px 2px 0 #001A99' }}
+          className="text-[#CCFF00] font-black text-[clamp(2.5rem,8vw,110px)] leading-none ml-1 animate-pulse hero-heading-shadow"
         >
           _
         </span>
@@ -112,9 +106,9 @@ export const HeroSection: React.FC = () => {
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex items-center gap-2.5 bg-black/40 backdrop-blur-md border border-white/30 px-5 py-2 rounded-full mb-8 md:mb-12 text-white text-xs md:text-sm font-semibold shadow-xl"
+        className="flex items-center gap-2 sm:gap-2.5 bg-black/40 backdrop-blur-md border border-white/30 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full mb-6 sm:mb-8 md:mb-12 text-white text-xs md:text-sm font-semibold shadow-xl max-w-[calc(100vw-2rem)]"
       >
-        <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] animate-ping"></span>
+        <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#CCFF00] animate-ping shrink-0"></span>
         <Typewriter
           phrases={[
             "Aspiring Full-Stack Developer",
@@ -125,7 +119,7 @@ export const HeroSection: React.FC = () => {
           typingSpeed={75}
           deletingSpeed={40}
           delayBetween={2200}
-          className="text-white font-medium min-w-[220px] sm:min-w-[290px]"
+          className="text-white font-medium min-w-[170px] sm:min-w-[260px] truncate sm:overflow-visible"
           cursorClassName="text-[#CCFF00]"
         />
         <span className="hidden sm:inline text-white/40">•</span>
@@ -155,7 +149,7 @@ export const HeroSection: React.FC = () => {
               cursor: 'grabbing',
             }}
             onDragStart={onFirstDrag}
-            className="w-full flex justify-start pl-[8%] md:pl-[22%] relative z-30 cursor-grab"
+            className="w-full flex justify-start pl-[4%] sm:pl-[8%] md:pl-[22%] relative z-30 cursor-grab"
             style={{
               touchAction: 'none',
             }}
@@ -165,7 +159,7 @@ export const HeroSection: React.FC = () => {
               delayMs={150}
               speedMs={120}
               textColorClass="text-[#CCFF00]"
-              className="text-[clamp(4.5rem,13vw,165px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
+              className="text-[clamp(3.2rem,11vw,165px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
             />
           </motion.div>
           
@@ -194,7 +188,7 @@ export const HeroSection: React.FC = () => {
               delayMs={700}
               speedMs={110}
               textColorClass="text-white"
-              className="text-[clamp(5rem,15vw,220px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
+              className="text-[clamp(3.8rem,14vw,220px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
             />
           </motion.div>
           
@@ -213,7 +207,7 @@ export const HeroSection: React.FC = () => {
               cursor: 'grabbing',
             }}
             onDragStart={onFirstDrag}
-            className="w-full flex justify-start pl-[14%] md:pl-[28%] relative z-10 cursor-grab"
+            className="w-full flex justify-start pl-[8%] sm:pl-[14%] md:pl-[28%] relative z-10 cursor-grab"
             style={{
               touchAction: 'none',
             }}
@@ -223,7 +217,7 @@ export const HeroSection: React.FC = () => {
               delayMs={1350}
               speedMs={100}
               textColorClass="text-white"
-              className="text-[clamp(4.5rem,13vw,165px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
+              className="text-[clamp(3.2rem,11vw,165px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
             />
           </motion.div>
 
@@ -245,7 +239,7 @@ export const HeroSection: React.FC = () => {
           <motion.div 
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-[4%] left-[2%] md:left-[16%] z-30 pointer-events-auto"
+            className="absolute bottom-[-4%] sm:bottom-[1%] md:bottom-[4%] left-[-2%] sm:left-[4%] md:left-[16%] z-30 pointer-events-auto scale-80 sm:scale-90 md:scale-100 origin-bottom-left"
           >
             <motion.div
               drag
@@ -267,7 +261,7 @@ export const HeroSection: React.FC = () => {
               style={{ touchAction: 'none' }}
             >
               <div
-                className="w-44 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[2rem] p-5 flex flex-col items-center justify-center rotate-[-10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 cursor-default group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
+                className="w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[-8deg] sm:rotate-[-10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 cursor-default group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
                 style={{
                   ...card1Tilt.tiltStyle,
                   backdropFilter: 'blur(16px)',
@@ -276,29 +270,29 @@ export const HeroSection: React.FC = () => {
               >
                 {/* Specular sheen overlay */}
                 <div
-                  className="absolute inset-0 rounded-[2rem] opacity-15 pointer-events-none"
+                  className="absolute inset-0 rounded-[1.6rem] sm:rounded-[2rem] opacity-15 pointer-events-none"
                   style={{
                     background: `radial-gradient(circle at ${card1Tilt.sheenPos.x}% ${card1Tilt.sheenPos.y}%, rgba(255,255,255,0.8) 0%, transparent 60%)`,
                   }}
                 />
                 {/* React & Node.js Icons Container */}
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-black/85 rounded-full flex items-center justify-center mb-3 shadow-inner border-[3px] border-white/50 overflow-hidden gap-1.5 p-2 group-hover:scale-110 transition-transform">
-                  <div className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-[#61DAFB] group-hover:rotate-45 transition-transform duration-500">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-black/85 rounded-full flex items-center justify-center mb-2 sm:mb-3 shadow-inner border-2 sm:border-[3px] border-white/50 overflow-hidden gap-1 sm:gap-1.5 p-1.5 sm:p-2 group-hover:scale-110 transition-transform">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 flex items-center justify-center text-[#61DAFB] group-hover:rotate-45 transition-transform duration-500">
                     <ReactIcon className="w-full h-full" />
                   </div>
-                  <div className="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-[#5FA04E] group-hover:-rotate-45 transition-transform duration-500">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#5FA04E] group-hover:-rotate-45 transition-transform duration-500">
                     <NodeJsIcon className="w-full h-full" />
                   </div>
                 </div>
 
                 <div className="text-center">
-                  <div className="inline-block bg-white text-black text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full mb-1 shadow-sm group-hover:bg-[#CCFF00] transition-colors">
+                  <div className="inline-block bg-white text-black text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 sm:px-2.5 py-0.5 rounded-full mb-1 shadow-sm group-hover:bg-[#CCFF00] transition-colors">
                     {portfolioConfig.hero.card1.tag}
                   </div>
-                  <p className="font-black text-sm md:text-base text-black leading-tight drop-shadow-xs">
+                  <p className="font-black text-xs sm:text-sm md:text-base text-black leading-tight drop-shadow-xs">
                     {portfolioConfig.hero.card1.title}
                   </p>
-                  <p className="text-[10px] md:text-xs text-black/80 font-bold mt-1">
+                  <p className="text-[9px] sm:text-[10px] md:text-xs text-black/80 font-bold mt-0.5 sm:mt-1">
                     {portfolioConfig.hero.card1.points}
                   </p>
                 </div>
@@ -310,7 +304,7 @@ export const HeroSection: React.FC = () => {
           <motion.div 
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-[8%] right-[2%] md:right-[18%] z-30 pointer-events-auto"
+            className="absolute top-[-3%] sm:top-[2%] md:top-[8%] right-[-2%] sm:right-[4%] md:right-[18%] z-30 pointer-events-auto scale-80 sm:scale-90 md:scale-100 origin-top-right"
           >
             <motion.div
               drag
@@ -335,7 +329,7 @@ export const HeroSection: React.FC = () => {
                 href={portfolioConfig.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-44 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[2rem] p-5 flex flex-col items-center justify-center rotate-[10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
+                className="block w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[8deg] sm:rotate-[10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
                 style={{
                   ...card2Tilt.tiltStyle,
                   backdropFilter: 'blur(16px)',
@@ -344,26 +338,26 @@ export const HeroSection: React.FC = () => {
               >
                 {/* Specular sheen overlay */}
                 <div
-                  className="absolute inset-0 rounded-[2rem] opacity-15 pointer-events-none"
+                  className="absolute inset-0 rounded-[1.6rem] sm:rounded-[2rem] opacity-15 pointer-events-none"
                   style={{
                     background: `radial-gradient(circle at ${card2Tilt.sheenPos.x}% ${card2Tilt.sheenPos.y}%, rgba(255,255,255,0.8) 0%, transparent 60%)`,
                   }}
                 />
                 {/* Official GitHub Icon in Circular Avatar */}
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-black rounded-full flex items-center justify-center mb-3 shadow-inner border-[3px] border-white/50 overflow-hidden text-white group-hover:scale-110 group-hover:bg-[#CCFF00] group-hover:text-black transition-all duration-300">
-                  <GithubIcon className="w-9 h-9 md:w-11 md:h-11 transition-colors" />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-black rounded-full flex items-center justify-center mb-2 sm:mb-3 shadow-inner border-2 sm:border-[3px] border-white/50 overflow-hidden text-white group-hover:scale-110 group-hover:bg-[#CCFF00] group-hover:text-black transition-all duration-300">
+                  <GithubIcon className="w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 transition-colors" />
                 </div>
 
                 <div className="text-center w-full">
-                  <div className="inline-block bg-black text-[#CCFF00] text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full mb-1 shadow-sm group-hover:bg-white group-hover:text-black transition-colors">
+                  <div className="inline-block bg-black text-[#CCFF00] text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 sm:px-2.5 py-0.5 rounded-full mb-1 shadow-sm group-hover:bg-white group-hover:text-black transition-colors">
                     GITHUB
                   </div>
                   
-                  <p className="font-black text-sm md:text-base text-black group-hover:text-[#0038FF] transition-colors leading-tight drop-shadow-xs">
+                  <p className="font-black text-xs sm:text-sm md:text-base text-black group-hover:text-[#0038FF] transition-colors leading-tight drop-shadow-xs">
                     @{portfolioConfig.hero.card2.handle}
                   </p>
                   
-                  <p className="text-[10px] md:text-xs text-black/80 font-bold mt-1">
+                  <p className="text-[9px] sm:text-[10px] md:text-xs text-black/80 font-bold mt-0.5 sm:mt-1">
                     {portfolioConfig.hero.card2.status}
                   </p>
                 </div>
@@ -372,17 +366,17 @@ export const HeroSection: React.FC = () => {
           </motion.div>
 
           {/* Decorative Arrow Left */}
-          <div className="absolute bottom-[0%] left-[-2%] md:left-[6%] w-24 h-24 md:w-32 md:h-32 z-20 pointer-events-none">
+          <div className="hidden sm:block absolute bottom-[0%] left-[-2%] md:left-[6%] w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 z-20 pointer-events-none">
             <ArrowGreenLeft />
           </div>
 
           {/* Decorative Arrow Right */}
-          <div className="absolute top-[0%] right-[-2%] md:right-[6%] w-24 h-24 md:w-32 md:h-32 z-20 pointer-events-none">
+          <div className="hidden sm:block absolute top-[0%] right-[-2%] md:right-[6%] w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 z-20 pointer-events-none">
             <ArrowGreenRight />
           </div>
 
           {/* Circular Spinning Badge */}
-          <div className="absolute bottom-[-14%] right-[2%] md:right-[12%] z-40 pointer-events-auto">
+          <div className="absolute bottom-[-16%] sm:bottom-[-14%] right-[0%] sm:right-[2%] md:right-[12%] z-40 pointer-events-auto">
             <CircularBadge text={portfolioConfig.hero.badgeText} />
           </div>
 
