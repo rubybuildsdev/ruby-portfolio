@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useSpring } from 'motion/react';
 
 interface TrailPoint {
@@ -24,18 +24,34 @@ export const CursorTrail: React.FC<CursorTrailProps> = ({ disabled = false }) =>
   const cursorX = useSpring(-100, springConfig);
   const cursorY = useSpring(-100, springConfig);
 
+  // Track prefers-reduced-motion live, so toggling it in the OS without a
+  // reload immediately enables/disables the trail (not just read once on mount)
+  const [reducedMotionPref, setReducedMotionPref] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = (e: MediaQueryListEvent) => setReducedMotionPref(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    const ring = ringRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d') ?? null;
+
     // Skip when disabled, on touch devices, or when reduced motion is preferred
-    if (
-      disabled ||
-      window.matchMedia('(pointer: coarse)').matches ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
+    if (disabled || window.matchMedia('(pointer: coarse)').matches || reducedMotionPref) {
+      // Clear any trail left over from before the setting changed
+      pointsRef.current = [];
+      isVisibleRef.current = false;
+      if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (ring) ring.style.opacity = '0';
       return;
     }
 
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d') ?? null;
     let rafId: number | null = null;
 
     const resizeCanvas = () => {
@@ -144,7 +160,7 @@ export const CursorTrail: React.FC<CursorTrailProps> = ({ disabled = false }) =>
       window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [cursorX, cursorY, disabled]);
+  }, [cursorX, cursorY, disabled, reducedMotionPref]);
 
   if (disabled) return null;
 

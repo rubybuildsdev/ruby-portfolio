@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { portfolioConfig, type Project } from '../data/portfolioData';
 import { ExternalLink, FolderGit2, Sparkles, Eye, X } from 'lucide-react';
@@ -9,6 +9,27 @@ interface ProjectsSectionProps {
   theme?: 'classic' | 'cyber';
   isOptimized?: boolean;
 }
+
+// Shared chips so the card and the Quick View modal always render the exact
+// same look for the same piece of information — no drift between the two.
+const CategoryBadge: React.FC<{ category: string }> = ({ category }) => (
+  <span className="text-[10px] font-black uppercase tracking-wider bg-black/60 text-[#CCFF00] px-3 py-1 rounded-full border border-white/10 group-hover:border-[#CCFF00]/40 transition-colors">
+    {category}
+  </span>
+);
+
+const DeployedBadge: React.FC = () => (
+  <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-black px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 group-hover:scale-105 transition-transform">
+    <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+    <span>DEPLOYED</span>
+  </span>
+);
+
+const TagChip: React.FC<{ tag: string }> = ({ tag }) => (
+  <span className="bg-black/45 text-white/95 text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/15 hover:border-[#CCFF00] hover:text-[#CCFF00] transition-colors">
+    {tag}
+  </span>
+);
 
 interface ProjectCardProps {
   project: Project;
@@ -121,14 +142,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             className="flex items-center justify-between mb-4"
             style={enable3D ? { transform: 'translateZ(20px)' } : undefined}
           >
-            <span className="text-[10px] font-black uppercase tracking-wider bg-black/60 text-[#CCFF00] px-3 py-1 rounded-full border border-white/10 group-hover:border-[#CCFF00]/40 transition-colors">
-              {project.category}
-            </span>
+            <CategoryBadge category={project.category} />
             {project.demoUrl ? (
-              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-black px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 group-hover:scale-105 transition-transform">
-                <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-                <span>DEPLOYED</span>
-              </span>
+              <DeployedBadge />
             ) : project.badge ? (
               <span className="text-[10px] font-extrabold uppercase bg-[#CCFF00] text-black px-2.5 py-0.5 rounded-full shadow-sm group-hover:scale-105 transition-transform">
                 {project.badge}
@@ -190,12 +206,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             style={enable3D ? { transform: 'translateZ(22px)' } : undefined}
           >
             {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-black/45 text-white/95 text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/15 hover:border-[#CCFF00] hover:text-[#CCFF00] transition-colors"
-              >
-                {tag}
-              </span>
+              <TagChip key={tag} tag={tag} />
             ))}
           </div>
 
@@ -267,8 +278,12 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   const enable3D = !reduceMotion && !isOptimized;
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const modalPanelRef = useRef<HTMLDivElement>(null);
+  const triggerElRef = useRef<HTMLElement | null>(null);
 
   const openModal = useCallback((project: Project) => {
+    // Remember what had focus so it can be restored when the modal closes
+    triggerElRef.current = document.activeElement as HTMLElement | null;
     playModalOpenSound();
     setSelectedProject(project);
   }, []);
@@ -277,22 +292,53 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
     setSelectedProject(null);
   }, []);
 
-  // Lock body scroll & handle Escape key when modal is open
+  // Lock body scroll, trap Tab focus inside the dialog, and handle Escape
+  // while the modal is open — restoring focus to the trigger on close.
   useEffect(() => {
     if (!selectedProject) return;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
+    const focusTimer = window.setTimeout(() => {
+      modalPanelRef.current?.focus();
+    }, 0);
+
+    const getFocusable = (): HTMLElement[] => {
+      const panel = modalPanelRef.current;
+      if (!panel) return [];
+      return Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         closeModal();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      window.clearTimeout(focusTimer);
       document.body.style.overflow = prevOverflow;
       window.removeEventListener('keydown', handleKeyDown);
+      triggerElRef.current?.focus();
     };
   }, [selectedProject, closeModal]);
 
@@ -391,6 +437,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             aria-labelledby="modal-project-title"
           >
             <motion.div
+              ref={modalPanelRef}
+              tabIndex={-1}
               initial={{ opacity: 0, scale: 0.92, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 16 }}
@@ -409,19 +457,13 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               </button>
 
               <div className="pr-12 mb-4 flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-black uppercase tracking-wider bg-black text-[#CCFF00] px-3 py-1 rounded-full border border-white/15">
-                  {selectedProject.category}
-                </span>
-                {selectedProject.demoUrl && (
-                  <span className="text-[11px] font-black uppercase tracking-wider bg-emerald-400 text-black px-3 py-1 rounded-full">
-                    DEPLOYED
-                  </span>
-                )}
+                <CategoryBadge category={selectedProject.category} />
+                {selectedProject.demoUrl && <DeployedBadge />}
               </div>
 
-              {/* Media Preview */}
+              {/* Media Preview — same aspect ratio as the card so the image doesn't jump-crop on open */}
               {(selectedProject.video || selectedProject.image) && (
-                <div className="w-full aspect-[16/9] rounded-2xl overflow-hidden mb-6 border border-white/20 bg-black/60">
+                <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden mb-6 border border-white/20 bg-black/60">
                   {selectedProject.video && !skipVideo ? (
                     <video
                       src={selectedProject.video}
@@ -457,19 +499,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
 
               {selectedProject.highlight && (
                 <div className="bg-white/5 border border-[#CCFF00]/30 rounded-xl p-3.5 mb-5 text-sm font-semibold text-[#CCFF00] flex items-center gap-2.5">
-                  <FolderGit2 className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                  <FolderGit2 className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                   <span>Architecture Focus: {selectedProject.highlight}</span>
                 </div>
               )}
 
               <div className="flex flex-wrap gap-2 mb-6">
                 {selectedProject.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="bg-black/50 text-white text-xs font-bold px-3 py-1 rounded-full border border-white/15"
-                  >
-                    {tag}
-                  </span>
+                  <TagChip key={tag} tag={tag} />
                 ))}
               </div>
 
