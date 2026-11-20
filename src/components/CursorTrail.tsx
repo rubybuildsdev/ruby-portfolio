@@ -6,9 +6,13 @@ interface TrailPoint {
   y: number;
 }
 
+interface CursorTrailProps {
+  disabled?: boolean;
+}
+
 const MAX_POINTS = 8;
 
-export const CursorTrail: React.FC = () => {
+export const CursorTrail: React.FC<CursorTrailProps> = ({ disabled = false }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const pointsRef = useRef<TrailPoint[]>([]);
@@ -21,8 +25,9 @@ export const CursorTrail: React.FC = () => {
   const cursorY = useSpring(-100, springConfig);
 
   useEffect(() => {
-    // Only run on desktop with pointer, and skip for users who asked for reduced motion
+    // Skip when disabled, on touch devices, or when reduced motion is preferred
     if (
+      disabled ||
       window.matchMedia('(pointer: coarse)').matches ||
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
@@ -139,7 +144,9 @@ export const CursorTrail: React.FC = () => {
       window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, disabled]);
+
+  if (disabled) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden">

@@ -1,20 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { portfolioConfig } from '../data/portfolioData';
-import { Menu, X, ArrowUpRight, Volume2, VolumeOff } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Settings, Volume2, VolumeOff, Zap, Palette } from 'lucide-react';
 import { GithubIcon as Github } from './Icons';
 
 interface NavbarProps {
   theme?: 'classic' | 'cyber';
+  onToggleTheme?: () => void;
   isMuted?: boolean;
   onToggleMute?: () => void;
+  isOptimized?: boolean;
+  onToggleOptimize?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   theme = 'classic',
+  onToggleTheme,
   isMuted = false,
   onToggleMute,
+  isOptimized = false,
+  onToggleOptimize,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [isBright, setIsBright] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
   const navContainerRef = useRef<HTMLElement>(null);
@@ -88,15 +95,19 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, []);
 
-  // Close mobile menu on Escape key or outside click
+  // Close dropdowns on Escape key or outside click
   useEffect(() => {
-    if (!mobileMenuOpen) return;
+    if (!mobileMenuOpen && !settingsOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false);
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setSettingsOpen(false);
+      }
     };
     const handleClickOutside = (e: MouseEvent) => {
       if (navContainerRef.current && !navContainerRef.current.contains(e.target as Node)) {
         setMobileMenuOpen(false);
+        setSettingsOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -105,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       window.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, settingsOpen]);
 
   const navLinks = [
     { label: 'Profile', href: '#profile', id: 'profile' },
@@ -114,6 +125,111 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Journey', href: '#journey', id: 'journey' },
     { label: 'Contact', href: '#contact', id: 'contact' },
   ];
+
+  const renderSettingsPanel = () => (
+    <div
+      className={`animate-slide-down absolute top-full right-0 mt-2.5 w-64 backdrop-blur-2xl border rounded-2xl p-3.5 shadow-2xl z-50 flex flex-col gap-2 ${
+        isBright
+          ? 'bg-white/90 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.14)]'
+          : theme === 'cyber'
+          ? 'bg-[#08090E]/95 border-white/20 text-white'
+          : 'bg-[#00229E]/95 border-white/25 text-white'
+      }`}
+      style={{
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+      }}
+    >
+      <div className="flex items-center justify-between px-1 pb-1.5 border-b border-current/10">
+        <span className="text-[11px] font-black uppercase tracking-wider opacity-70">
+          Quick Settings
+        </span>
+      </div>
+
+      {/* Sound FX Toggle */}
+      {onToggleMute && (
+        <button
+          type="button"
+          onClick={onToggleMute}
+          aria-pressed={!isMuted}
+          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+            isBright ? 'hover:bg-neutral-900/5' : 'hover:bg-white/10'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            {isMuted ? <VolumeOff className="w-4 h-4 opacity-60" /> : <Volume2 className="w-4 h-4 text-[#CCFF00]" />}
+            <span>Sound FX</span>
+          </span>
+          <span
+            className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+              !isMuted
+                ? 'bg-[#CCFF00] text-black'
+                : isBright
+                ? 'bg-neutral-200 text-neutral-600'
+                : 'bg-white/10 text-white/60'
+            }`}
+          >
+            {isMuted ? 'Off' : 'On'}
+          </span>
+        </button>
+      )}
+
+      {/* Performance / Optimization Mode Toggle */}
+      {onToggleOptimize && (
+        <button
+          type="button"
+          onClick={onToggleOptimize}
+          aria-pressed={isOptimized}
+          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+            isBright ? 'hover:bg-neutral-900/5' : 'hover:bg-white/10'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <Zap className={`w-4 h-4 ${isOptimized ? 'text-[#CCFF00]' : 'opacity-70'}`} />
+            <span>Lite Mode</span>
+          </span>
+          <span
+            className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+              isOptimized
+                ? 'bg-[#CCFF00] text-black'
+                : isBright
+                ? 'bg-neutral-200 text-neutral-600'
+                : 'bg-white/10 text-white/60'
+            }`}
+          >
+            {isOptimized ? 'On' : 'Off'}
+          </span>
+        </button>
+      )}
+
+      {/* Theme Toggle */}
+      {onToggleTheme && (
+        <button
+          type="button"
+          onClick={onToggleTheme}
+          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+            isBright ? 'hover:bg-neutral-900/5' : 'hover:bg-white/10'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <Palette className="w-4 h-4 opacity-80" />
+            <span>Theme</span>
+          </span>
+          <span
+            className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+              theme === 'cyber'
+                ? 'bg-[#CCFF00] text-black'
+                : isBright
+                ? 'bg-neutral-900 text-white'
+                : 'bg-white/20 text-white'
+            }`}
+          >
+            {theme === 'cyber' ? 'Cyber' : 'Classic'}
+          </span>
+        </button>
+      )}
+    </div>
+  );
 
   return (
     <header
@@ -159,7 +275,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </a>
 
-          {/* Desktop Navigation Links with Clear Typographic Hierarchy & Active State */}
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-1 lg:space-x-1.5">
             {navLinks.map((item) => {
               const isActive = activeSection === item.id;
@@ -183,24 +299,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </div>
 
-          {/* Action Buttons: Sound Toggle + GitHub Profile */}
-          <div className="hidden md:flex items-center gap-2.5">
-            {onToggleMute && (
-              <button
-                type="button"
-                onClick={onToggleMute}
-                aria-label={isMuted ? 'Unmute UI sounds' : 'Mute UI sounds'}
-                aria-pressed={isMuted}
-                title={isMuted ? 'Unmute UI sounds' : 'Mute UI sounds'}
-                className={`p-2 rounded-full border transition-all duration-200 cursor-pointer ${
-                  isBright
-                    ? 'border-neutral-900/20 text-neutral-900 hover:bg-neutral-900 hover:text-white'
-                    : 'border-white/35 text-white hover:bg-white hover:text-[#0038FF]'
-                }`}
-              >
-                {isMuted ? <VolumeOff className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              </button>
-            )}
+          {/* Desktop Action Buttons: Compact Settings + GitHub Profile */}
+          <div className="hidden md:flex items-center gap-2.5 relative">
+            <button
+              type="button"
+              onClick={() => setSettingsOpen((prev) => !prev)}
+              aria-expanded={settingsOpen}
+              aria-label="Open quick settings"
+              title="Quick settings"
+              className={`p-2 rounded-full border transition-all duration-200 cursor-pointer ${
+                settingsOpen
+                  ? 'bg-[#CCFF00] text-black border-[#CCFF00] rotate-45'
+                  : isBright
+                  ? 'border-neutral-900/20 text-neutral-900 hover:bg-neutral-900 hover:text-white'
+                  : 'border-white/35 text-white hover:bg-white hover:text-[#0038FF]'
+              }`}
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+
             <a
               href={portfolioConfig.githubUrl}
               target="_blank"
@@ -215,22 +332,50 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>GitHub Profile</span>
               <ArrowUpRight className="w-3.5 h-3.5 opacity-70" />
             </a>
+
+            {settingsOpen && renderSettingsPanel()}
           </div>
 
-          {/* Mobile Menu Button with Frosted Glass Styling */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-expanded={mobileMenuOpen}
-            aria-label="Toggle menu"
-            className={`md:hidden p-2 rounded-xl border backdrop-blur-md transition-all ${
-              isBright
-                ? 'border-neutral-900/20 text-neutral-900 bg-neutral-900/5 hover:bg-neutral-900/10'
-                : 'border-white/35 text-white bg-white/15 hover:bg-white/25'
-            }`}
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Controls: Compact Settings + Menu Button */}
+          <div className="flex md:hidden items-center gap-2 relative">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setSettingsOpen((prev) => !prev);
+              }}
+              aria-expanded={settingsOpen}
+              aria-label="Open quick settings"
+              className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+                settingsOpen
+                  ? 'bg-[#CCFF00] text-black border-[#CCFF00]'
+                  : isBright
+                  ? 'border-neutral-900/20 text-neutral-900 bg-neutral-900/5 hover:bg-neutral-900/10'
+                  : 'border-white/35 text-white bg-white/15 hover:bg-white/25'
+              }`}
+            >
+              <Settings className="w-4 h-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSettingsOpen(false);
+                setMobileMenuOpen((prev) => !prev);
+              }}
+              aria-expanded={mobileMenuOpen}
+              aria-label="Toggle menu"
+              className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+                isBright
+                  ? 'border-neutral-900/20 text-neutral-900 bg-neutral-900/5 hover:bg-neutral-900/10'
+                  : 'border-white/35 text-white bg-white/15 hover:bg-white/25'
+              }`}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+
+            {settingsOpen && renderSettingsPanel()}
+          </div>
         </div>
 
         {/* Mobile Dropdown Menu */}

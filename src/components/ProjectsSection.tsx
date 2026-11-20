@@ -6,10 +6,15 @@ import { GithubIcon as Github } from './Icons';
 
 interface ProjectsSectionProps {
   theme?: 'classic' | 'cyber';
+  isOptimized?: boolean;
 }
 
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'classic' }) => {
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
+  theme = 'classic',
+  isOptimized = false,
+}) => {
   const reduceMotion = Boolean(useReducedMotion());
+  const skipVideo = reduceMotion || isOptimized;
 
   return (
     <section
@@ -49,7 +54,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {portfolioConfig.projects.map((project, index) => {
             const mediaContent =
-              project.video && !reduceMotion ? (
+              project.video && !skipVideo ? (
                 <video
                   src={project.video}
                   poster={project.image}

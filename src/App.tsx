@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { MotionConfig } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { ProfileSection } from './components/ProfileSection';
@@ -12,6 +13,7 @@ import { playHoverSound, setSoundMuted, unlockAudioContext } from './lib/soundFx
 export function App() {
   const [theme, setTheme] = useState<'classic' | 'cyber'>('classic');
   const [isMuted, setIsMuted] = useState(false);
+  const [isOptimized, setIsOptimized] = useState(false);
 
   // Ensure refresh starts at top unless a specific hash anchor was requested
   useEffect(() => {
@@ -68,33 +70,46 @@ export function App() {
     setIsMuted((prev) => !prev);
   };
 
+  const toggleOptimize = () => {
+    setIsOptimized((prev) => !prev);
+  };
+
   return (
-    <div
-      className={`min-h-screen ${
-        theme === 'cyber' ? 'bg-[#08090E]' : 'bg-[#0038FF]'
-      } transition-colors duration-500 flex flex-col font-sans selection:bg-[#CCFF00] selection:text-black relative overflow-x-clip w-full scroll-smooth`}
-    >
-      {/* Interactive Cursor Trail matching neon volt & electric blue theme */}
-      <CursorTrail />
+    <MotionConfig reducedMotion={isOptimized ? 'always' : 'user'}>
+      <div
+        className={`min-h-screen ${
+          theme === 'cyber' ? 'bg-[#08090E]' : 'bg-[#0038FF]'
+        } transition-colors duration-500 flex flex-col font-sans selection:bg-[#CCFF00] selection:text-black relative overflow-x-clip w-full scroll-smooth`}
+      >
+        {/* Interactive Cursor Trail (disabled in Performance Mode) */}
+        <CursorTrail disabled={isOptimized} />
 
-      {/* Background Grid Pattern for the top Hero area */}
-      <div className="absolute inset-0 bg-grid-pattern pointer-events-none z-0 h-[1100px]"></div>
+        {/* Background Grid Pattern for the top Hero area */}
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none z-0 h-[1100px]"></div>
 
-      <Navbar theme={theme} isMuted={isMuted} onToggleMute={toggleMute} />
-      <main className="flex-1 flex flex-col w-full relative z-10">
-        <HeroSection />
-        <ProfileSection />
-        <ProjectsSection theme={theme} />
-        <TerminalPlayground
+        <Navbar
           theme={theme}
           onToggleTheme={toggleTheme}
           isMuted={isMuted}
           onToggleMute={toggleMute}
+          isOptimized={isOptimized}
+          onToggleOptimize={toggleOptimize}
         />
-        <JourneySection />
-      </main>
-      <ContactFooter theme={theme} />
-    </div>
+        <main className="flex-1 flex flex-col w-full relative z-10">
+          <HeroSection />
+          <ProfileSection />
+          <ProjectsSection theme={theme} isOptimized={isOptimized} />
+          <TerminalPlayground
+            theme={theme}
+            onToggleTheme={toggleTheme}
+            isMuted={isMuted}
+            onToggleMute={toggleMute}
+          />
+          <JourneySection />
+        </main>
+        <ContactFooter theme={theme} />
+      </div>
+    </MotionConfig>
   );
 }
 
