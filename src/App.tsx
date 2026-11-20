@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { ProfileSection } from './components/ProfileSection';
@@ -32,7 +32,7 @@ export function App() {
       <CursorTrail />
 
       {/* Background Grid Pattern for the top Hero area */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none z-0 h-[1100px]"></div>
+      <div className="absolute inset-0 bg-grid-pattern pointer-events-none z-0 h-[1100px]"></div>
 
       <Navbar theme={theme} />
       <main className="flex-1 flex flex-col w-full relative z-10">

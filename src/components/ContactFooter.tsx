@@ -13,17 +13,17 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
   };
 
   return (
-    <footer 
-      id="contact" 
+    <footer
+      id="contact"
       className={`text-white pt-20 pb-12 px-6 md:px-10 relative z-20 w-full transition-colors duration-500 overflow-hidden scroll-mt-20 md:scroll-mt-24 ${
         theme === 'cyber' ? 'bg-[#08090E]' : 'bg-[#0038FF]'
       }`}
     >
       {/* Background Grid Pattern - EXACT UNIFORM MATCH */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-grid-pattern pointer-events-none"></div>
 
       <div className="max-w-5xl mx-auto relative z-10 flex flex-col items-center text-center">
-        
+
         {/* Top Sticker Badge */}
         <div className="inline-flex items-center gap-2 bg-[#CCFF00] text-black font-black text-[11px] sm:text-xs px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full uppercase tracking-wider mb-6 rotate-[-2deg] shadow-lg max-w-[calc(100vw-2rem)] text-center">
           <Sparkles className="w-4 h-4 shrink-0" />
@@ -72,8 +72,10 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
             <a href="#projects" className="hover:text-white transition-colors">Projects</a>
             <a href="#journey" className="hover:text-white transition-colors">Journey</a>
             <button
+              type="button"
               onClick={scrollToTop}
-              className="flex items-center gap-1 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors ml-2"
+              aria-label="Scroll to top"
+              className="flex items-center gap-1 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors ml-2 cursor-pointer"
               title="Scroll to top"
             >
               <ArrowUp className="w-4 h-4" />

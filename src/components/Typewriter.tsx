@@ -23,25 +23,26 @@ export const Typewriter: React.FC<TypewriterProps> = ({
 
   useEffect(() => {
     const targetPhrase = phrases[currentPhraseIndex];
+    let pauseTimer: ReturnType<typeof setTimeout> | undefined;
 
     const handleTyping = () => {
       if (!isDeleting) {
         // Typing forward
-        setCurrentText(targetPhrase.substring(0, currentText.length + 1));
+        const nextLength = currentText.length + 1;
+        setCurrentText(targetPhrase.substring(0, nextLength));
 
-        if (currentText.length + 1 === targetPhrase.length) {
+        if (nextLength === targetPhrase.length) {
           // Finished typing phrase, pause before deleting
-          setTimeout(() => setIsDeleting(true), delayBetween);
-          return;
+          pauseTimer = setTimeout(() => setIsDeleting(true), delayBetween);
         }
       } else {
         // Deleting backward
-        setCurrentText(targetPhrase.substring(0, currentText.length - 1));
+        const nextLength = currentText.length - 1;
+        setCurrentText(targetPhrase.substring(0, nextLength));
 
-        if (currentText.length - 1 === 0) {
+        if (nextLength === 0) {
           setIsDeleting(false);
           setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-          return;
         }
       }
     };
@@ -49,7 +50,10 @@ export const Typewriter: React.FC<TypewriterProps> = ({
     const speed = isDeleting ? deletingSpeed : typingSpeed;
     const timer = setTimeout(handleTyping, speed);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
   }, [currentText, isDeleting, currentPhraseIndex, phrases, typingSpeed, deletingSpeed, delayBetween]);
 
   return (

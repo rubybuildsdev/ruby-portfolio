@@ -200,13 +200,15 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
 
           {/* Mobile Menu Button with Frosted Glass Styling */}
           <button
+            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle menu"
             className={`md:hidden p-2 rounded-xl border backdrop-blur-md transition-all ${
               isBright
                 ? 'border-neutral-900/20 text-neutral-900 bg-neutral-900/5 hover:bg-neutral-900/10'
                 : 'border-white/35 text-white bg-white/15 hover:bg-white/25'
             }`}
-            aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -215,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <div
-            className={`absolute top-full left-0 right-0 mt-2 backdrop-blur-2xl border rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col gap-2 z-50 md:hidden animate-in fade-in slide-in-from-top-4 duration-200 ${
+            className={`animate-slide-down absolute top-full left-0 right-0 mt-2 backdrop-blur-2xl border rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col gap-2 z-50 md:hidden ${
               isBright
                 ? 'bg-white/85 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.12)]'
                 : theme === 'cyber'

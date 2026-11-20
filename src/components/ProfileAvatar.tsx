@@ -9,11 +9,11 @@ import {
 } from 'motion/react';
 
 const GREETINGS = [
-  'Halo',
-  'Sedang mengerjakan project baru',
-  'Scroll ke bawah untuk melihat detail',
-  'Silakan cek repo di GitHub',
-  'Terima kasih sudah berkunjung',
+  'Hey there!',
+  'Currently building something new',
+  'Scroll down to see my work',
+  'Check out my GitHub repos',
+  'Thanks for stopping by!',
 ];
 
 export const ProfileAvatar: React.FC = () => {

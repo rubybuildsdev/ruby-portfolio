@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'motion/react';
 import { portfolioConfig } from '../data/portfolioData';
 import { ArrowGreenLeft, ArrowGreenRight, CircularBadge } from './SvgAccents';
@@ -94,8 +94,17 @@ const dragTransitionConfig = { bounceStiffness: 450, bounceDamping: 22 };
 
 export const HeroSection: React.FC = () => {
   const [hasInteracted, setHasInteracted] = useState(false);
+  const isDraggingCard2Ref = useRef(false);
+  const dragResetTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
   const onFirstDrag = useCallback(() => {
     setHasInteracted(true);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (dragResetTimerRef.current) clearTimeout(dragResetTimerRef.current);
+    };
   }, []);
 
   // Tilt hooks for the two glass cards
@@ -265,7 +274,7 @@ export const HeroSection: React.FC = () => {
               style={{ touchAction: 'none' }}
             >
               <div
-                className="w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[-8deg] sm:rotate-[-10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 cursor-default group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
+                className="w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[-8deg] sm:rotate-[-10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
                 style={{
                   ...card1Tilt.tiltStyle,
                   backdropFilter: 'blur(16px)',
@@ -323,7 +332,16 @@ export const HeroSection: React.FC = () => {
                 filter: 'drop-shadow(0 12px 30px rgba(204,255,0,0.4))',
                 cursor: 'grabbing',
               }}
-              onDragStart={onFirstDrag}
+              onDragStart={() => {
+                if (dragResetTimerRef.current) clearTimeout(dragResetTimerRef.current);
+                isDraggingCard2Ref.current = true;
+                onFirstDrag();
+              }}
+              onDragEnd={() => {
+                dragResetTimerRef.current = setTimeout(() => {
+                  isDraggingCard2Ref.current = false;
+                }, 50);
+              }}
               onMouseMove={card2Tilt.onMouseMove}
               onMouseLeave={card2Tilt.onMouseLeave}
               className="cursor-grab"
@@ -333,7 +351,13 @@ export const HeroSection: React.FC = () => {
                 href={portfolioConfig.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[8deg] sm:rotate-[10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
+                draggable={false}
+                onClick={(e) => {
+                  if (isDraggingCard2Ref.current) {
+                    e.preventDefault();
+                  }
+                }}
+                className="w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[8deg] sm:rotate-[10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
                 style={{
                   ...card2Tilt.tiltStyle,
                   backdropFilter: 'blur(16px)',

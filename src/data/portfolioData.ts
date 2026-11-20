@@ -8,6 +8,7 @@ export interface Project {
   githubUrl: string;
   demoUrl?: string;
   image?: string;
+  video?: string;
   badge?: string;
   highlight?: string;
 }
@@ -107,7 +108,8 @@ export const portfolioConfig = {
       tags: ["React", "Three.js", "Tailwind CSS", "Vite", "Vitest"],
       githubUrl: "https://github.com/rubybuildsdev/cube",
       demoUrl: "https://cubesolving.vercel.app",
-      image: "/images/projects/cube-solver/gif-cube-solver.gif",
+      image: "/images/projects/cube-solver/poster.webp",
+      video: "/images/projects/cube-solver/cube-solver.mp4",
       badge: "FEATURED",
       highlight: "Kociemba Two-Phase Algorithm in WebGL"
     },

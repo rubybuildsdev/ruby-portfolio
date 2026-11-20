@@ -14,6 +14,10 @@ interface TerminalPlaygroundProps {
   onToggleTheme: () => void;
 }
 
+interface WindowWithWebkitAudio extends Window {
+  webkitAudioContext?: typeof AudioContext;
+}
+
 const DEV_JOKES = [
   "Why do programmers prefer dark mode? Because light attracts bugs.",
   "There are 10 types of people in the world: those who understand binary, and those who don't.",
@@ -31,15 +35,16 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isRunningTest, setIsRunningTest] = useState(false);
 
-  // UPGRADE 1 — Auto-demo state
+  // Auto-demo state
   const [isAutoDemo, setIsAutoDemo] = useState(true);
   const autoDemoTimers = useRef<number[]>([]);
+  const actionTimers = useRef<number[]>([]);
   const autoDemoStarted = useRef(false);
 
-  // UPGRADE 2 — Screen shake state
+  // Screen shake state
   const [isShaking, setIsShaking] = useState(false);
 
-  // UPGRADE 3 — Keyboard sound FX state
+  // Keyboard sound FX state
   const [isMuted, setIsMuted] = useState(false);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
@@ -88,18 +93,19 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
     { label: 'clear', cmd: 'clear' },
   ];
 
-  // --- UPGRADE 2 helper: trigger screen shake ---
   const triggerShake = useCallback(() => {
     setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 300);
+    const id = window.setTimeout(() => setIsShaking(false), 300);
+    actionTimers.current.push(id);
   }, []);
 
-  // --- UPGRADE 3 helper: play keyboard click via Web Audio API ---
   const playKeyClick = useCallback(() => {
     if (isMuted) return;
     try {
       if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const AudioCtx = window.AudioContext || (window as WindowWithWebkitAudio).webkitAudioContext;
+        if (!AudioCtx) return;
+        audioCtxRef.current = new AudioCtx();
       }
       const ctx = audioCtxRef.current;
       const osc = ctx.createOscillator();
@@ -266,12 +272,11 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
         ),
       };
     } else if (lower === 'run test' || lower === 'test' || lower === 'npm test') {
-      // UPGRADE 2 — trigger shake on run test
       triggerShake();
       setIsRunningTest(true);
       setOutputs((prev) => [...prev, userEcho]);
 
-      setTimeout(() => {
+      const testTimerId = window.setTimeout(() => {
         setOutputs((prev) => [
           ...prev,
           {
@@ -303,9 +308,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
         ]);
         setIsRunningTest(false);
       }, 700);
+      actionTimers.current.push(testTimerId);
       return;
     } else if (lower.startsWith('curl') || lower === 'api') {
-      // UPGRADE 2 — trigger shake on curl
       triggerShake();
 
       const payload = {
@@ -453,16 +458,18 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
     }
   };
 
-  // --- UPGRADE 1: Interrupt auto-demo on user interaction ---
+  // Interrupt auto-demo on user interaction
   const interruptAutoDemo = useCallback(() => {
     if (!isAutoDemo) return;
     setIsAutoDemo(false);
-    // Clear all pending auto-demo timers
-    autoDemoTimers.current.forEach((id) => clearTimeout(id));
+    autoDemoTimers.current.forEach((id) => {
+      clearTimeout(id);
+      clearInterval(id);
+    });
     autoDemoTimers.current = [];
   }, [isAutoDemo]);
 
-  // --- UPGRADE 1: Auto-demo with IntersectionObserver ---
+  // Auto-demo with IntersectionObserver
   useEffect(() => {
     if (!isAutoDemo || autoDemoStarted.current) return;
 
@@ -477,10 +484,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           observer.disconnect();
 
           const demoCommands = ['whoami', 'skills', 'run test'];
-          let cumulativeDelay = 1500; // initial wait
+          let cumulativeDelay = 1500;
 
           const typeAndExecute = (cmd: string, startDelay: number) => {
-            // Type character by character
             let charIdx = 0;
             const typeTimerId = window.setTimeout(() => {
               const interval = window.setInterval(() => {
@@ -489,7 +495,6 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 setInputVal(partial);
                 if (charIdx >= cmd.length) {
                   clearInterval(interval);
-                  // Execute after finishing typing
                   const execTimer = window.setTimeout(() => {
                     setInputVal('');
                     handleCommandExecution(cmd);
@@ -504,11 +509,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
 
           demoCommands.forEach((cmd) => {
             typeAndExecute(cmd, cumulativeDelay);
-            // typing duration + 200ms exec delay + 2000ms pause (except after last)
             cumulativeDelay += cmd.length * 50 + 200 + 2000;
           });
 
-          // After all commands finish, mark auto-demo as done
           const finishTimer = window.setTimeout(() => {
             setIsAutoDemo(false);
           }, cumulativeDelay);
@@ -527,26 +530,27 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAutoDemo]);
 
-  // Cleanup timers on unmount
+  // Cleanup all timers on unmount
   useEffect(() => {
     return () => {
-      autoDemoTimers.current.forEach((id) => clearTimeout(id));
+      autoDemoTimers.current.forEach((id) => {
+        clearTimeout(id);
+        clearInterval(id);
+      });
+      actionTimers.current.forEach((id) => clearTimeout(id));
     };
   }, []);
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      id="playground" 
+      id="playground"
       className={`pt-2 pb-20 md:pt-4 md:pb-28 px-4 sm:px-6 md:px-10 relative z-20 w-full transition-colors duration-500 overflow-hidden scroll-mt-20 md:scroll-mt-24 ${
         theme === 'cyber' ? 'bg-[#08090E] text-white' : 'bg-[#0038FF] text-white'
       }`}
     >
-      {/* Shake keyframes */}
-      <style>{`@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-2px)} 75%{transform:translateX(2px)} }`}</style>
-
       {/* Background Grid Pattern - EXACT UNIFORM MATCH TO HERO AND PROJECTS */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-grid-pattern pointer-events-none"></div>
 
       {/* Subtle Section Bridge Divider */}
       <div className="max-w-6xl mx-auto relative z-10 mb-8 pt-2">
@@ -554,9 +558,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        
+
         {/* Section Heading */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -583,7 +587,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          className={`w-full rounded-2xl md:rounded-3xl border border-white/20 bg-black/45 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col ${isShaking ? 'animate-[shake_0.3s_ease-in-out]' : ''}`}
+          className={`w-full rounded-2xl md:rounded-3xl border border-white/20 bg-black/45 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col ${isShaking ? 'animate-shake' : ''}`}
           onClick={() => {
             interruptAutoDemo();
           }}
@@ -606,19 +610,20 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>INTERACTIVE</span>
               </div>
-              
-              {/* UPGRADE 3 — Mute/Unmute toggle */}
+
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsMuted((prev) => !prev);
                 }}
+                aria-label={isMuted ? 'Unmute keyboard sounds' : 'Mute keyboard sounds'}
+                aria-pressed={isMuted}
                 className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 hover:bg-[#CCFF00] hover:text-black text-white font-mono text-[10px] md:text-xs font-semibold border border-white/20 transition-all cursor-pointer"
                 title={isMuted ? 'Unmute keyboard sounds' : 'Mute keyboard sounds'}
               >
                 {isMuted ? <VolumeOff className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
-                <span className="hidden sm:inline">{isMuted ? 'Unmuted' : 'Sound'}</span>
+                <span className="hidden sm:inline">{isMuted ? 'Muted' : 'Sound'}</span>
               </button>
 
               <button
@@ -627,6 +632,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                   e.stopPropagation();
                   handleCommandExecution('theme --toggle');
                 }}
+                aria-label="Toggle global theme"
                 className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 hover:bg-[#CCFF00] hover:text-black text-white font-mono text-[10px] md:text-xs font-semibold border border-white/20 transition-all cursor-pointer"
                 title="Toggle global theme"
               >
@@ -653,13 +659,13 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           </div>
 
           {/* Terminal Screen & Logs Area */}
-          <div 
+          <div
             ref={logsContainerRef}
             onClick={() => inputRef.current?.focus()}
             className="p-4 md:p-6 min-h-[250px] sm:min-h-[300px] max-h-[380px] sm:max-h-[440px] overflow-y-auto space-y-3 font-mono cursor-text scroll-smooth"
           >
             {outputs.map((out) => (
-              <div key={out.id} className="animate-in fade-in duration-200">
+              <div key={out.id} className="animate-fade-in">
                 {out.content}
               </div>
             ))}
@@ -673,7 +679,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           </div>
 
           {/* Active Command Input Bar */}
-          <form 
+          <form
             onSubmit={handleFormSubmit}
             className="border-t border-white/15 bg-black/60 px-4 md:px-6 py-3 flex items-center gap-2"
           >
@@ -682,23 +688,22 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
               <span className="hidden sm:inline">ruby@terminal:~$</span>
               <span className="sm:hidden">$</span>
             </div>
-            
+
             <input
               ref={inputRef}
               type="text"
               value={inputVal}
               onChange={(e) => {
                 setInputVal(e.target.value);
-                // Interrupt auto-demo when user types
                 interruptAutoDemo();
               }}
               onKeyDown={(e) => {
-                // UPGRADE 3 — play click sound on each keypress
                 playKeyClick();
                 handleKeyDown(e);
               }}
               disabled={isRunningTest}
               placeholder="type 'help', 'run test', or 'projects'..."
+              aria-label="Terminal command input"
               className="flex-1 bg-transparent text-white font-mono text-xs md:text-sm focus:outline-none placeholder:text-white/30"
               autoComplete="off"
               spellCheck="false"
