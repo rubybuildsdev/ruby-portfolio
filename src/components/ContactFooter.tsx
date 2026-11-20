@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { portfolioConfig } from '../data/portfolioData';
-import { Mail, ArrowUp, Heart, Sparkles } from 'lucide-react';
+import { Mail, ArrowUp, Heart, Sparkles, Copy, Check } from 'lucide-react';
 import { GithubIcon as Github } from './Icons';
+import { playSuccessSound } from '../lib/soundFx';
 
 interface ContactFooterProps {
   theme?: 'classic' | 'cyber';
@@ -10,8 +12,40 @@ interface ContactFooterProps {
 const CURRENT_YEAR = new Date().getFullYear();
 
 export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' }) => {
+  const [copied, setCopied] = useState(false);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCopyEmail = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(portfolioConfig.email);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = portfolioConfig.email;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      playSuccessSound();
+      setCopied(true);
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = setTimeout(() => setCopied(false), 2200);
+    } catch {
+      // Ignore clipboard errors
+    }
   };
 
   return (
@@ -23,6 +57,24 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
     >
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-grid-pattern pointer-events-none"></div>
+
+      {/* Floating Toast Notification */}
+      <AnimatePresence>
+        {copied && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            role="status"
+            aria-live="polite"
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#CCFF00] text-black font-black text-xs sm:text-sm border-2 border-black shadow-[4px_4px_0px_#000]"
+          >
+            <Check className="w-4 h-4 shrink-0" aria-hidden="true" />
+            <span>Email copied! ({portfolioConfig.email})</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="max-w-5xl mx-auto relative z-10 flex flex-col items-center text-center">
 
@@ -58,6 +110,15 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
             <Mail className="w-5 h-5" aria-hidden="true" />
             <span>Send Email</span>
           </a>
+          <button
+            type="button"
+            onClick={handleCopyEmail}
+            aria-label="Copy email address"
+            className="min-h-[44px] flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-black/35 border-2 border-white/30 text-white font-black text-sm md:text-base hover:bg-[#CCFF00] hover:text-black hover:border-[#CCFF00] transition-all shadow-xl hover:scale-105 cursor-pointer"
+          >
+            {copied ? <Check className="w-4 h-4" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
+            <span>{copied ? 'Copied!' : 'Copy Email'}</span>
+          </button>
         </div>
 
         {/* Divider & Copyright */}

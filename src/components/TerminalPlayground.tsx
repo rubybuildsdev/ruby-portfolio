@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { portfolioConfig } from '../data/portfolioData';
 import { Terminal, CornerDownLeft, Sparkles, CheckCircle2, RotateCcw, Palette, ExternalLink, Volume2, VolumeOff } from 'lucide-react';
-import { playKeyClickSound } from '../lib/soundFx';
+import { playKeyClickSound, playSuccessSound, playErrorSound } from '../lib/soundFx';
 
 interface TerminalOutput {
   id: string;
@@ -59,8 +59,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
   const actionTimers = useRef<number[]>([]);
   const autoDemoStarted = useRef(false);
 
-  // Screen shake state
+  // Screen shake & Neon Spark Burst state
   const [isShaking, setIsShaking] = useState(false);
+  const [showSparkBurst, setShowSparkBurst] = useState(false);
 
 
   const logsContainerRef = useRef<HTMLDivElement>(null);
@@ -303,6 +304,12 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           },
         ]);
         setIsRunningTest(false);
+        playSuccessSound();
+        if (!isOptimized) {
+          setShowSparkBurst(true);
+          const sparkId = window.setTimeout(() => setShowSparkBurst(false), 750);
+          actionTimers.current.push(sparkId);
+        }
       }, 700);
       actionTimers.current.push(testTimerId);
       return;
@@ -425,6 +432,8 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
         ),
       };
     } else {
+      triggerShake();
+      playErrorSound();
       responseOutput = {
         id: `resp-${Date.now()}`,
         type: 'error',
@@ -436,6 +445,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
       };
     }
 
+    if (responseOutput.type !== 'error') {
+      playSuccessSound();
+    }
     setOutputs((prev) => [...prev, userEcho, responseOutput]);
   };
 
@@ -682,8 +694,27 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           <div
             ref={logsContainerRef}
             onClick={() => inputRef.current?.focus()}
-            className="p-4 md:p-6 min-h-[250px] sm:min-h-[300px] max-h-[380px] sm:max-h-[440px] overflow-y-auto space-y-3 font-mono cursor-text scroll-smooth"
+            className="relative p-4 md:p-6 min-h-[250px] sm:min-h-[300px] max-h-[380px] sm:max-h-[440px] overflow-y-auto space-y-3 font-mono cursor-text scroll-smooth"
           >
+            {showSparkBurst && (
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden z-20">
+                {Array.from({ length: 14 }, (_, idx) => {
+                  const angle = (idx / 14) * Math.PI * 2;
+                  const dist = 55 + (idx % 3) * 28;
+                  const tx = Math.cos(angle) * dist;
+                  const ty = Math.sin(angle) * dist;
+                  return (
+                    <motion.span
+                      key={idx}
+                      initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                      animate={{ opacity: 0, x: tx, y: ty, scale: 0.2 }}
+                      transition={{ duration: 0.65, ease: 'easeOut' }}
+                      className="absolute left-1/2 top-1/2 w-2 h-2 rounded-full bg-[#CCFF00] shadow-[0_0_8px_#CCFF00]"
+                    />
+                  );
+                })}
+              </div>
+            )}
             {outputs.map((out) => (
               <div key={out.id} className="animate-fade-in">
                 {out.content}

@@ -1,9 +1,16 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { portfolioConfig } from '../data/portfolioData';
 import { Compass, Milestone } from 'lucide-react';
 
 export const JourneySection: React.FC = () => {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 75%', 'end 65%'],
+  });
+  const lineScaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
   return (
     <section
       id="journey"
@@ -32,22 +39,37 @@ export const JourneySection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Timeline List */}
-        <div className="relative pl-6 md:pl-10 border-l-4 border-[#0038FF]/20 space-y-8 sm:space-y-10 ml-3 sm:ml-4 md:ml-6">
+        {/* Timeline List with Scroll-Linked Animated Progress Line */}
+        <div
+          ref={timelineRef}
+          className="relative pl-6 md:pl-10 border-l-4 border-[#0038FF]/15 space-y-8 sm:space-y-10 ml-3 sm:ml-4 md:ml-6"
+        >
+          {/* Animated Scroll Progress Line */}
+          <motion.div
+            aria-hidden="true"
+            style={{ scaleY: lineScaleY, transformOrigin: 'top' }}
+            className="absolute -left-[4px] top-0 bottom-0 w-1 bg-[#0038FF] rounded-full pointer-events-none"
+          />
+
           {portfolioConfig.journey.map((step, idx) => (
             <motion.div
               key={step.title}
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: idx * 0.15 }}
+              transition={{ duration: 0.5, delay: idx * 0.12 }}
               whileHover={{ x: 6 }}
               className="relative group"
             >
-              {/* Timeline marker */}
-              <div className="absolute -left-[38px] md:-left-[54px] top-1.5 w-6 h-6 rounded-full bg-[#0038FF] border-4 border-white shadow-md flex items-center justify-center text-[#CCFF00] group-hover:scale-125 group-hover:bg-[#CCFF00] group-hover:text-black transition-all duration-300">
+              {/* Timeline marker with scroll reveal glow */}
+              <motion.div
+                initial={{ scale: 0.85, backgroundColor: '#0038FF' }}
+                whileInView={{ scale: 1, backgroundColor: '#0038FF' }}
+                viewport={{ once: false, amount: 0.8 }}
+                className="absolute -left-[38px] md:-left-[54px] top-1.5 w-6 h-6 rounded-full bg-[#0038FF] border-4 border-white shadow-[0_0_0_3px_rgba(204,255,0,0.75)] flex items-center justify-center text-[#CCFF00] group-hover:scale-125 group-hover:bg-[#CCFF00] group-hover:text-black transition-all duration-300 z-10"
+              >
                 <div className="w-2 h-2 rounded-full bg-[#CCFF00] group-hover:bg-black"></div>
-              </div>
+              </motion.div>
 
               {/* Card */}
               <div className="bg-[#F8F9FA] border-2 border-gray-200/90 rounded-[1.4rem] sm:rounded-[1.6rem] p-4 sm:p-6 shadow-sm hover:shadow-[5px_5px_0px_#0038FF] sm:hover:shadow-[8px_8px_0px_#0038FF] hover:border-black transition-all duration-300">

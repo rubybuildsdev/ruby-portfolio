@@ -14,6 +14,7 @@ import styles from "./toolchain-marquee-utils/toolchain-marquee.module.css";
 
 export type ToolchainItem = {
   label: string;
+  role?: string;
   icon: React.ReactNode;
   accent: string;
 };
@@ -48,11 +49,17 @@ function ToolchainGroup({
           className={styles.badge}
           key={`${hidden ? "copy-" : ""}${item.label}`}
           style={{ "--tool-accent": item.accent } as React.CSSProperties}
+          title={item.role ? `${item.label} • ${item.role}` : item.label}
         >
           <span className={styles.icon} aria-hidden="true">
             {item.icon}
           </span>
           <span>{item.label}</span>
+          {item.role && !hidden && (
+            <span className={styles.tooltip} role="tooltip">
+              {item.role}
+            </span>
+          )}
         </span>
       ))}
     </div>
@@ -76,6 +83,7 @@ function ToolchainRow({
   const groupRef = React.useRef<HTMLDivElement>(null);
   const progressRef = React.useRef(0);
   const [copyCount, setCopyCount] = React.useState(4);
+  const [hovered, setHovered] = React.useState(false);
   const x = useMotionValue(0);
 
   React.useEffect(() => {
@@ -107,7 +115,7 @@ function ToolchainRow({
   }, [reduceMotion, x]);
 
   useAnimationFrame((_time, delta) => {
-    if (reduceMotion || paused) return;
+    if (reduceMotion || paused || hovered) return;
 
     const groupWidth = groupRef.current?.offsetWidth ?? 0;
     if (groupWidth === 0) return;
@@ -123,6 +131,8 @@ function ToolchainRow({
       ref={viewportRef}
       className={styles.viewport}
       data-direction={direction}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <motion.div className={styles.track} style={{ x }}>
         {Array.from(

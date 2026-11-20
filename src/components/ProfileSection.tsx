@@ -42,19 +42,23 @@ const CORE_TECHNOLOGIES: TechItem[] = [
   { name: 'Gemini API', role: 'AI Integration', Icon: GeminiIcon, accent: '#5B76EC' },
 ];
 
-// Split the stack into two rows that scroll in opposite directions
 const TOOLCHAIN_STACKS: ToolchainItem[][] = [
   CORE_TECHNOLOGIES.slice(0, 6),
   CORE_TECHNOLOGIES.slice(6),
 ].map((row) =>
-  row.map(({ name, Icon, accent }) => ({
+  row.map(({ name, role, Icon, accent }) => ({
     label: name,
+    role,
     icon: <Icon className="w-4 h-4 sm:w-[1.1rem] sm:h-[1.1rem]" />,
     accent,
   }))
 );
 
-export const ProfileSection: React.FC = () => {
+interface ProfileSectionProps {
+  isOptimized?: boolean;
+}
+
+export const ProfileSection: React.FC<ProfileSectionProps> = ({ isOptimized = false }) => {
   return (
     <section
       id="profile"
@@ -92,12 +96,12 @@ export const ProfileSection: React.FC = () => {
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-            {/* Left Column: Neo-Brutalist Static Profile Avatar */}
+            {/* Left Column: Neo-Brutalist Profile Avatar */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center">
-              <ProfileAvatar />
+              <ProfileAvatar isOptimized={isOptimized} />
             </div>
 
-            {/* Right Column: Bio, Authentic SVG Tech Stack, and Action */}
+            {/* Right Column: Bio, Tech Stack, and Action */}
             <div className="lg:col-span-7 flex flex-col justify-center">
 
               <div className="inline-flex items-center gap-1.5 text-[#0038FF] font-black text-xs uppercase tracking-wider mb-2">
@@ -119,7 +123,7 @@ export const ProfileSection: React.FC = () => {
 
               {/* Running Tech Stack Marquee */}
               <div className="mb-8">
-                <div className="flex items-center justify-between mb-3.5">
+                <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-black uppercase tracking-wider text-neutral-700">
                     Core Technologies & Tooling
                   </span>

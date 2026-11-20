@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from 'motion/react';
 
@@ -16,14 +17,26 @@ const GREETINGS = [
   'Thanks for stopping by!',
 ];
 
-export const ProfileAvatar: React.FC = () => {
-  const reduceMotion = Boolean(useReducedMotion());
+interface ProfileAvatarProps {
+  isOptimized?: boolean;
+}
+
+export const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ isOptimized = false }) => {
+  const reduceMotion = Boolean(useReducedMotion()) || isOptimized;
   const sectionRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const greetingTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const [greeting, setGreeting] = useState<string | null>(null);
   const glowOpacity = useMotionValue(0);
+
+  // 2D offset shadow parallax values (no 3D tilt on avatar)
+  const rawOffsetX = useMotionValue(0);
+  const rawOffsetY = useMotionValue(0);
+  const shadowBlueX = useSpring(rawOffsetX, { stiffness: 220, damping: 24 });
+  const shadowBlueY = useSpring(rawOffsetY, { stiffness: 220, damping: 24 });
+  const shadowNeonX = useTransform(shadowBlueX, (v) => -v);
+  const shadowNeonY = useTransform(shadowBlueY, (v) => -v);
 
   // Scroll-linked parallax
   const { scrollYProgress } = useScroll({
@@ -36,13 +49,15 @@ export const ProfileAvatar: React.FC = () => {
     reduceMotion ? [0, 0] : [-24, 24]
   );
 
-  // Glow that reacts to how close the cursor is to the avatar
+  // Glow & 2D shadow parallax reacting to cursor position
   useEffect(() => {
     if (
       reduceMotion ||
       window.matchMedia('(pointer: coarse)').matches ||
       typeof window === 'undefined'
     ) {
+      rawOffsetX.set(0);
+      rawOffsetY.set(0);
       return;
     }
 
@@ -57,9 +72,18 @@ export const ProfileAvatar: React.FC = () => {
         const rect = el.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const distance = Math.hypot(event.clientX - centerX, event.clientY - centerY);
+        const dx = event.clientX - centerX;
+        const dy = event.clientY - centerY;
+        const distance = Math.hypot(dx, dy);
         const maxDistance = 420;
-        glowOpacity.set(Math.max(0, 1 - distance / maxDistance));
+        const proximity = Math.max(0, 1 - distance / maxDistance);
+        glowOpacity.set(proximity);
+
+        // Shift backing shadow layers in 2D proportional to cursor vector
+        const clampedX = Math.max(-1, Math.min(1, dx / 260));
+        const clampedY = Math.max(-1, Math.min(1, dy / 260));
+        rawOffsetX.set(clampedX * 10);
+        rawOffsetY.set(clampedY * 10);
       });
     };
 
@@ -68,7 +92,7 @@ export const ProfileAvatar: React.FC = () => {
       window.removeEventListener('mousemove', handleMove);
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
-  }, [reduceMotion, glowOpacity]);
+  }, [reduceMotion, glowOpacity, rawOffsetX, rawOffsetY]);
 
   useEffect(() => {
     return () => {
@@ -86,7 +110,7 @@ export const ProfileAvatar: React.FC = () => {
   return (
     <div ref={sectionRef} className="relative w-full flex flex-col items-center select-none">
       <motion.div style={{ y: parallaxY }} className="relative w-full flex flex-col items-center">
-        {/* Idle breathing float — paused for reduced-motion / Lite Mode */}
+        {/* Idle breathing float */}
         <motion.div
           animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
           transition={
@@ -118,7 +142,7 @@ export const ProfileAvatar: React.FC = () => {
             )}
           </AnimatePresence>
 
-          {/* Neo-Brutalist Frame Container */}
+          {/* Flat Neo-Brutalist Frame Container with 2D Shadow Parallax */}
           <motion.div
             ref={frameRef}
             whileHover={{ y: -6 }}
@@ -136,17 +160,19 @@ export const ProfileAvatar: React.FC = () => {
             }}
             className="group relative w-full h-[300px] sm:h-[380px] md:h-[420px] max-w-[280px] sm:max-w-[320px] md:max-w-[340px] cursor-pointer"
           >
-            {/* Layer 1: Electric Blue Offset Shadow */}
-            <div
-              className="absolute inset-0 bg-[#0038FF] rounded-[2rem] sm:rounded-[2.5rem] transform translate-x-2 translate-y-2 sm:translate-x-3 sm:translate-y-3 group-hover:translate-x-3.5 group-hover:translate-y-3.5 transition-transform duration-300 pointer-events-none"
+            {/* Layer 1: Electric Blue Offset Shadow (2D Parallax) */}
+            <motion.div
+              style={{ x: shadowBlueX, y: shadowBlueY }}
+              className="absolute inset-0 bg-[#0038FF] rounded-[2rem] sm:rounded-[2.5rem] translate-x-2 translate-y-2 sm:translate-x-3 sm:translate-y-3 pointer-events-none"
             />
 
-            {/* Layer 2: Neon Volt Offset Shadow */}
-            <div
-              className="absolute inset-0 bg-[#CCFF00] rounded-[2rem] sm:rounded-[2.5rem] transform -translate-x-1.5 -translate-y-1.5 sm:-translate-x-2 sm:-translate-y-2 group-hover:-translate-x-2.5 group-hover:-translate-y-2.5 transition-transform duration-300 pointer-events-none"
+            {/* Layer 2: Neon Volt Offset Shadow (2D Parallax) */}
+            <motion.div
+              style={{ x: shadowNeonX, y: shadowNeonY }}
+              className="absolute inset-0 bg-[#CCFF00] rounded-[2rem] sm:rounded-[2.5rem] -translate-x-1.5 -translate-y-1.5 sm:-translate-x-2 sm:-translate-y-2 pointer-events-none"
             />
 
-            {/* Layer 3: Main Avatar Box Frame with 3px Black Border */}
+            {/* Layer 3: Main Flat Avatar Box Frame */}
             <div className="relative w-full h-full rounded-[1.8rem] sm:rounded-[2.3rem] border-3 border-black bg-[#121624] overflow-hidden shadow-2xl z-10 flex items-center justify-center">
               <img
                 src="/images/profile/avatar-optimized.jpg"

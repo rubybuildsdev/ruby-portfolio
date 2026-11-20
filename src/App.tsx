@@ -5,6 +5,7 @@ import { HeroSection } from './components/HeroSection';
 import { ProfileSection } from './components/ProfileSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { CursorTrail } from './components/CursorTrail';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { playHoverSound, setSoundMuted, unlockAudioContext } from './lib/soundFx';
 
@@ -129,6 +130,8 @@ export function App() {
             theme === 'cyber' ? 'bg-[#08090E]' : 'bg-[#0038FF]'
           } transition-colors duration-500 flex flex-col font-sans selection:bg-[#CCFF00] selection:text-black relative overflow-x-clip w-full scroll-smooth`}
         >
+          <ScrollProgressBar />
+
           <a href="#main-content" className="skip-to-content">
             Skip to main content
           </a>
@@ -148,8 +151,8 @@ export function App() {
             onToggleOptimize={toggleOptimize}
           />
           <main id="main-content" className="flex-1 flex flex-col w-full relative z-10">
-            <HeroSection />
-            <ProfileSection />
+            <HeroSection theme={theme} isOptimized={isOptimized} />
+            <ProfileSection isOptimized={isOptimized} />
             <ProjectsSection theme={theme} isOptimized={isOptimized} />
             <Suspense fallback={null}>
               <TerminalPlayground
