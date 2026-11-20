@@ -1,18 +1,18 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { portfolioConfig } from '../data/portfolioData';
-import { 
+import {
   PhpIcon,
   JavaScriptIcon,
-  TypeScriptIcon, 
+  TypeScriptIcon,
   MySqlIcon,
-  NodeJsIcon, 
-  GitIcon, 
-  ReactIcon, 
-  ThreeJsIcon, 
-  TailwindIcon, 
+  NodeJsIcon,
+  GitIcon,
+  ReactIcon,
+  ThreeJsIcon,
+  TailwindIcon,
   ViteIcon,
-  GithubIcon 
+  GithubIcon
 } from './Icons';
 import { ProfileAvatar } from './ProfileAvatar';
 import { Sparkles, ArrowUpRight, Terminal, Code2 } from 'lucide-react';
@@ -74,7 +74,7 @@ export const ProfileSection: React.FC = () => {
             WHO I AM
           </h2>
           <p className="text-black/60 font-semibold text-sm md:text-base max-w-xl mx-auto mt-2">
-            Aspiring full-stack engineer building real web systems, 3D simulations, and AI automation.
+            A quick introduction to what I do, how I learn, and what I like building.
           </p>
         </motion.div>
 
@@ -87,7 +87,7 @@ export const ProfileSection: React.FC = () => {
           className="bg-[#F8F9FA] rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.2rem] p-5 sm:p-8 md:p-14 border-2 border-gray-200/90 shadow-[6px_6px_0px_#0038FF] sm:shadow-[10px_10px_0px_#0038FF] hover:border-black transition-all duration-300 relative"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
+
             {/* Left Column: Neo-Brutalist Static Profile Avatar */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center">
               <ProfileAvatar />
@@ -95,22 +95,22 @@ export const ProfileSection: React.FC = () => {
 
             {/* Right Column: Bio, Authentic SVG Tech Stack, and Action */}
             <div className="lg:col-span-7 flex flex-col justify-center">
-              
+
               <div className="inline-flex items-center gap-1.5 text-[#0038FF] font-black text-xs uppercase tracking-wider mb-2">
                 <Sparkles className="w-4 h-4 text-[#0038FF]" />
-                <span>Code • Curiosity • Discipline</span>
+                <span>Code • Build • Learn</span>
               </div>
 
               <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-black tracking-tight leading-tight mb-4">
-                Building Real Systems, Not Just Surface Mocks
+                Turning Ideas into Working Apps
               </h3>
 
               <p className="text-black/70 text-sm md:text-base font-medium leading-relaxed mb-4">
-                I am <strong className="text-black">{portfolioConfig.name}</strong>, an aspiring full-stack engineer who values strong fundamentals, clean code hygiene, and building end-to-end applications.
+                I'm <strong className="text-black">{portfolioConfig.name}</strong>, a web developer from Indonesia. I enjoy building things from scratch to clean, interactive user interfaces to fast backends and 3D graphics in the browser.
               </p>
 
               <p className="text-black/60 text-xs md:text-sm font-semibold leading-relaxed mb-7">
-                From full-stack reservation management systems with database transactions (Pink Outdoor), to interactive 3D Rubik's cube algorithms (CubeSolver), and voice-assisted AI tooling (WarungAI)—I learn by shipping working software daily.
+                I learn best by shipping. Some of my favorite builds include an outdoor gear rental platform (Pink Outdoor), a browser-based 3D Rubik's Cube solver (CubeSolver), and an AI-powered POS assistant for local shops (WarungAI).
               </p>
 
               {/* Running Tech Stack Marquee */}
@@ -120,7 +120,7 @@ export const ProfileSection: React.FC = () => {
                     Core Technologies & Tooling
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-wider bg-black/5 text-black/60 px-2.5 py-0.5 rounded-full">
-                    {CORE_TECHNOLOGIES.length} Verified Stacks
+                    {CORE_TECHNOLOGIES.length} Verified Technologies
                   </span>
                 </div>
 
@@ -134,7 +134,7 @@ export const ProfileSection: React.FC = () => {
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full bg-[#0038FF] text-white font-black text-xs md:text-sm hover:bg-[#CCFF00] hover:text-black transition-colors shadow-sm"
                 >
                   <Terminal className="w-4 h-4" />
-                  <span>Try Live Playground</span>
+                  <span>Try Live Terminal</span>
                 </a>
 
                 <a
@@ -144,7 +144,7 @@ export const ProfileSection: React.FC = () => {
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full border-2 border-black bg-white text-black font-bold text-xs md:text-sm hover:bg-black hover:text-white transition-colors"
                 >
                   <GithubIcon className="w-4 h-4" />
-                  <span>GitHub Activity</span>
+                  <span>View GitHub Profile</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>

@@ -43,7 +43,7 @@ const TypingHeading: React.FC<{
         {text.slice(0, displayedLength)}
       </h1>
       {isTyping && (
-        <span 
+        <span
           className="text-[#CCFF00] font-black text-[clamp(2.5rem,8vw,110px)] leading-none ml-1 animate-pulse hero-heading-shadow"
         >
           _
@@ -104,9 +104,9 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className="relative z-10 pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-20 md:pb-32 px-4 flex flex-col items-center justify-center w-full max-w-[1440px] mx-auto">
-      
+
       {/* Subtitle / Status Pill with Live Looping Typewriter */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -115,10 +115,10 @@ export const HeroSection: React.FC = () => {
         <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#CCFF00] animate-ping shrink-0"></span>
         <Typewriter
           phrases={[
-            "Aspiring Full-Stack Developer",
-            "AI Automation Explorer",
-            "React, Node.js & Three.js",
-            "Building Everyday • Code, Learn, Repeat",
+            "Aspiring Full-Stack Web Developer",
+            "Interactive 3D WebGL in Three.js",
+            "Building with React & Node.js",
+            "Exploring AI & Applied Automations",
           ]}
           typingSpeed={75}
           deletingSpeed={40}
@@ -134,10 +134,10 @@ export const HeroSection: React.FC = () => {
 
       {/* Massive Typography & Elements Container */}
       <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center z-10 mt-4 md:mt-8 mb-12 md:mb-16">
-        
+
         {/* Text Stack with Typing Animation */}
         <div className="w-full flex flex-col items-center relative z-10 space-y-1 md:space-y-3">
-          
+
           {/* CODE (Types in first) */}
           <motion.div
             drag
@@ -166,7 +166,7 @@ export const HeroSection: React.FC = () => {
               className="text-[clamp(3.2rem,11vw,165px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
             />
           </motion.div>
-          
+
           {/* LEARN (Types in second) */}
           <motion.div
             drag
@@ -195,7 +195,7 @@ export const HeroSection: React.FC = () => {
               className="text-[clamp(3.8rem,14vw,220px)] font-black leading-[0.85] tracking-tighter m-0 p-0 uppercase select-none transition-transform hover:scale-[1.02]"
             />
           </motion.div>
-          
+
           {/* REPEAT (Types in third) */}
           <motion.div
             drag
@@ -233,14 +233,14 @@ export const HeroSection: React.FC = () => {
           animate={{ opacity: hasInteracted ? 0 : 0.7 }}
           className="text-white/40 text-xs font-medium mt-6 tracking-wide"
         >
-          💡 grab & toss the words
+          Drag and fling the words to test the physics
         </motion.p>
 
         {/* Absolute Overlays (Cards, Arrows, Badge) */}
         <div className="absolute inset-0 w-full h-full pointer-events-none">
-          
+
           {/* Floating Glass Card 1 (Bottom Left): Liquid Glass with React & Node.js */}
-          <motion.div 
+          <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             className="absolute bottom-[-4%] sm:bottom-[1%] md:bottom-[4%] left-[-2%] sm:left-[4%] md:left-[16%] z-30 pointer-events-auto scale-80 sm:scale-90 md:scale-100 origin-bottom-left"
@@ -305,7 +305,7 @@ export const HeroSection: React.FC = () => {
           </motion.div>
 
           {/* Floating Glass Card 2 (Top Right): Liquid Glass with GitHub Octocat & Visible Handle */}
-          <motion.div 
+          <motion.div
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             className="absolute top-[-3%] sm:top-[2%] md:top-[8%] right-[-2%] sm:right-[4%] md:right-[18%] z-30 pointer-events-auto scale-80 sm:scale-90 md:scale-100 origin-top-right"
@@ -329,7 +329,7 @@ export const HeroSection: React.FC = () => {
               className="cursor-grab"
               style={{ touchAction: 'none' }}
             >
-              <a 
+              <a
                 href={portfolioConfig.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -356,11 +356,11 @@ export const HeroSection: React.FC = () => {
                   <div className="inline-block bg-black text-[#CCFF00] text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 sm:px-2.5 py-0.5 rounded-full mb-1 shadow-sm group-hover:bg-white group-hover:text-black transition-colors">
                     GITHUB
                   </div>
-                  
+
                   <p className="font-black text-xs sm:text-sm md:text-base text-black group-hover:text-[#0038FF] transition-colors leading-tight drop-shadow-xs">
                     @{portfolioConfig.hero.card2.handle}
                   </p>
-                  
+
                   <p className="text-[9px] sm:text-[10px] md:text-xs text-black/80 font-bold mt-0.5 sm:mt-1">
                     {portfolioConfig.hero.card2.status}
                   </p>
@@ -383,7 +383,6 @@ export const HeroSection: React.FC = () => {
           <div className="absolute bottom-[-16%] sm:bottom-[-14%] right-[0%] sm:right-[2%] md:right-[12%] z-40 pointer-events-auto">
             <CircularBadge text={portfolioConfig.hero.badgeText} />
           </div>
-
         </div>
       </div>
     </section>

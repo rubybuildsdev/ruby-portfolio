@@ -32,14 +32,14 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
           <div>
             <div className="inline-flex items-center gap-1.5 text-[#CCFF00] font-black text-xs uppercase tracking-wider mb-2">
               <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '6s' }} />
-              <span>Real World & Explorations</span>
+              <span>Battle-Tested & Explorations</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
               FEATURED PROJECTS
             </h2>
           </div>
           <p className="text-white/70 max-w-md text-sm md:text-base font-medium">
-            Projects built to explore full-stack development, interactive 3D simulations, and AI-powered business tools.
+            Real code running in the wild. No lorem ipsum, no fake mockups, and zero stickers peeled off the Rubik's cube.
           </p>
         </motion.div>
 
@@ -209,8 +209,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
             className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-8 py-3 sm:py-4 rounded-full bg-[#CCFF00] text-black font-black text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-xl hover:shadow-[0_0_25px_rgba(204,255,0,0.6)] max-w-full"
           >
             <Github className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
-            <span className="sm:hidden">Explore Repositories (@{portfolioConfig.githubUsername})</span>
-            <span className="hidden sm:inline">Explore All Repositories on GitHub (@{portfolioConfig.githubUsername})</span>
+            <span className="sm:hidden">Inspect Repositories (@{portfolioConfig.githubUsername})</span>
+            <span className="hidden sm:inline">Inspect All Repositories on GitHub (@{portfolioConfig.githubUsername})</span>
           </motion.a>
         </motion.div>
 

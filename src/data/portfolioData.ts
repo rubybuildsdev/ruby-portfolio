@@ -26,28 +26,28 @@ export interface Pillar {
 
 export const portfolioConfig = {
   name: "RUBY",
-  tagline: "Aspiring Full-Stack & AI Automation Developer",
+  tagline: "Full-Stack Developer building practical web apps, 3D simulations, and AI integrations.",
   githubUsername: "rubybuildsdev",
   githubUrl: "https://github.com/rubybuildsdev",
   email: "rubykln80@gmail.com",
   location: "Indonesia",
 
   hero: {
-    badgeText: "OPEN TO LEARN • EXPLORE MY WORK • ",
+    badgeText: "CODE • SHIP • REFINE • REPEAT • ",
     heading1: "CODE",
     heading2: "LEARN",
     heading3: "REPEAT",
     card1: {
-      tag: "Currently Learning",
+      tag: "Focus Stack",
       title: "React & Node.js",
-      stat: "Full-Stack Roadmap",
-      points: "Daily Coding Streak"
+      stat: "TypeScript First",
+      points: "Building daily"
     },
     card2: {
       handle: "rubybuildsdev",
       title: "GitHub Activity",
-      stat: "Active Repositories",
-      status: "Building everyday"
+      stat: "Public Repositories",
+      status: "Active contributor"
     }
   },
 
@@ -55,8 +55,8 @@ export const portfolioConfig = {
     {
       id: "frontend",
       step: "PILLAR 01",
-      title: "FRONTEND BASICS",
-      subtitle: "Building responsive, modern, & interactive web UIs",
+      title: "FRONTEND ENGINEERING",
+      subtitle: "Building responsive, type-safe interfaces with modern React, Three.js, and clean component architecture.",
       primaryStat: "REACT + TS",
       statLabel: "Modern UI",
       badgeText: "TAILWIND CSS",
@@ -65,8 +65,8 @@ export const portfolioConfig = {
     {
       id: "backend",
       step: "PILLAR 02",
-      title: "BACKEND EXPLORATION",
-      subtitle: "Understanding servers, REST APIs, & database persistence",
+      title: "BACKEND SYSTEMS",
+      subtitle: "Designing RESTful APIs, relational schemas, and server runtimes that handle real data reliably.",
       primaryStat: "NODE + EXP",
       statLabel: "API Systems",
       badgeText: "REST APIs",
@@ -75,8 +75,8 @@ export const portfolioConfig = {
     {
       id: "tools",
       step: "PILLAR 03",
-      title: "TOOLS & AI INTEGRATION",
-      subtitle: "Version control, AI assistance, & deployment pipelines",
+      title: "WORKFLOW & AI TOOLING",
+      subtitle: "Leveraging modern CLI tooling, Git workflows, and LLM APIs to build practical automation.",
       primaryStat: "GIT & MCP",
       statLabel: "Modern Flow",
       badgeText: "GEMINI API",
@@ -90,62 +90,62 @@ export const portfolioConfig = {
       title: "Pink Outdoor",
       category: "FULLSTACK SYSTEM",
       tagline: "Outdoor Equipment Rental Management System",
-      description: "A web-based outdoor equipment rental system designed to simplify equipment management, customer bookings, payment processing, and administrative operations.",
+      description: "A web-based equipment rental system handling bookings, gear availability, payment workflows, and administrative control with transactional integrity.",
       tags: ["PHP Native", "MySQL", "Bootstrap", "Google OAuth 2.0", "SweetAlert2"],
       githubUrl: "https://github.com/rubybuildsdev/pink-outdoor",
       demoUrl: "",
       image: "/images/projects/pink-outdoor/project-1-cover.png",
       badge: "FEATURED",
-      highlight: "Booking & Payment Workflow"
+      highlight: "State Machine & Booking Verification"
     },
     {
       id: "cube-solver",
       title: "CubeSolver 3D",
       category: "INTERACTIVE 3D",
       tagline: "Interactive 3D Rubik's Cube Simulator & Solver",
-      description: "An interactive 3D Rubik's Cube application featuring cube simulation, Kociemba Two-Phase solving algorithm, and beginner-friendly learning tools.",
+      description: "Interactive 3D cube simulation built with Three.js. Implements the Kociemba Two-Phase algorithm to calculate optimal solutions in under 20 moves.",
       tags: ["React", "Three.js", "Tailwind CSS", "Vite", "Vitest"],
       githubUrl: "https://github.com/rubybuildsdev/cube",
       demoUrl: "https://cubesolving.vercel.app",
       image: "/images/projects/cube-solver/gif-cube-solver.gif",
       badge: "FEATURED",
-      highlight: "3D Simulation & Kociemba Solver"
+      highlight: "Kociemba Two-Phase Algorithm in WebGL"
     },
     {
       id: "warung-ai",
       title: "WarungAI",
       category: "AI & POS APPLICATION",
-      tagline: "AI-Powered POS & Business Management for Small Shops",
-      description: "An in-development smart point-of-sale application concept for Indonesian traditional shops with voice-to-transaction, inventory alerts, and AI business insights.",
+      tagline: "AI-Assisted Point-of-Sale for Small Retailers",
+      description: "A lightweight POS application concept for traditional Indonesian shops. Features voice-driven order entry via Gemini API, real-time inventory alerts, and automated bookkeeping.",
       tags: ["React Native", "Expo", "Node.js", "Express.js", "PostgreSQL", "Gemini API"],
       githubUrl: "https://github.com/rubybuildsdev/warungai",
       demoUrl: "",
       image: "/images/projects/warungai.webp",
       badge: "AI INTEGRATION",
-      highlight: "Voice-to-Transaction & Gemini API"
+      highlight: "Voice Order Processing via Gemini API"
     }
   ] as Project[],
 
   journey: [
     {
-      period: "The Spark",
-      title: "Discovered Web Development",
-      description: "Started with the fundamentals: HTML semantics, modern CSS layouts (Flexbox & Grid), and basic JavaScript logic."
+      period: "Foundation",
+      title: "Web Fundamentals",
+      description: "Learned semantic HTML, modern responsive CSS layouts, and vanilla JavaScript logic to build interfaces from the ground up."
     },
     {
-      period: "Leveling Up",
-      title: "Embracing React & Modern Tooling",
-      description: "Moved to React, TypeScript, and Tailwind CSS. Built interactive 3D simulations (CubeSolver) and learned component architecture."
+      period: "Expansion",
+      title: "React, TypeScript & 3D",
+      description: "Adopted React component architecture, strict TypeScript typing, and WebGL with Three.js to build interactive simulations like CubeSolver."
     },
     {
-      period: "Current Focus",
-      title: "Full-Stack & AI Integration",
-      description: "Developing rental systems (Pink Outdoor) and experimenting with Gemini API & Node.js backends for real-world automation (WarungAI)."
+      period: "Current Work",
+      title: "Full-Stack Architecture",
+      description: "Developing end-to-end applications with relational database persistence, auth workflows, and integrating AI models into practical tools like WarungAI."
     },
     {
-      period: "Next Milestones",
-      title: "Databases, Multi-Agent & Deployment",
-      description: "Deepening knowledge in PostgreSQL, multi-agent workflows, mobile cross-platform apps, and scalable system design."
+      period: "Looking Ahead",
+      title: "Scalable Systems",
+      description: "Deepening knowledge in database query optimization, system resilience, and building reliable autonomous workflows."
     }
   ]
 };

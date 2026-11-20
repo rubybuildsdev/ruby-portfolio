@@ -14,6 +14,17 @@ interface TerminalPlaygroundProps {
   onToggleTheme: () => void;
 }
 
+const DEV_JOKES = [
+  "Why do programmers prefer dark mode? Because light attracts bugs.",
+  "There are 10 types of people in the world: those who understand binary, and those who don't.",
+  "!false — it's funny because it's true.",
+  "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+  "Debugging: Being the detective in a crime movie where you are also the murderer.",
+  "Why do Java programmers wear glasses? Because they don't C#.",
+  "Algorithm: Word used by programmers when they don't want to explain what they did.",
+  "There's no place like 127.0.0.1 (unless you're on production, then godspeed).",
+];
+
 export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, onToggleTheme }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<string[]>([]);
@@ -47,10 +58,10 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
             RUBY LIVE DEV SHELL v2.4.0 (x86_64-rubyos)
           </div>
           <div className="text-white/60 text-xs">
-            Type a command below or click a quick-action chip to explore projects, run test pipelines, or toggle system themes.
+            Type a command below or click a quick chip to explore projects, run test pipelines, or grab a developer joke.
           </div>
           <div className="text-white/40 text-[11px] pt-1">
-            Type <span className="text-[#CCFF00] font-bold">help</span> to list all available commands.
+            Type <span className="text-[#CCFF00] font-bold">help</span> to list all commands, or try <span className="text-[#CCFF00] font-bold">joke</span> / <span className="text-[#CCFF00] font-bold">coffee</span>.
           </div>
         </div>
       ),
@@ -70,6 +81,8 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
     { label: 'skills', cmd: 'skills' },
     { label: 'projects', cmd: 'projects' },
     { label: 'run test', cmd: 'run test' },
+    { label: 'joke', cmd: 'joke' },
+    { label: 'coffee', cmd: 'coffee' },
     { label: 'curl /api', cmd: 'curl /api/portfolio' },
     { label: 'theme', cmd: 'theme --toggle' },
     { label: 'clear', cmd: 'clear' },
@@ -157,6 +170,12 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 <span className="text-sky-400 font-bold">run test</span> : Simulate unit test runner
               </div>
               <div>
+                <span className="text-sky-400 font-bold">joke</span> : Random programmer humor
+              </div>
+              <div>
+                <span className="text-sky-400 font-bold">coffee</span> : Refill dev caffeine buffer
+              </div>
+              <div>
                 <span className="text-sky-400 font-bold">curl /api/portfolio</span> : Fetch JSON payload
               </div>
               <div>
@@ -181,9 +200,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
         type: 'output',
         content: (
           <div className="space-y-1.5 py-1 text-xs md:text-sm font-mono text-white/90">
-            <div className="text-[#CCFF00] font-bold">{portfolioConfig.name} — {portfolioConfig.tagline}</div>
+            <div className="text-[#CCFF00] font-bold">{portfolioConfig.name} — Full-Stack Developer</div>
             <div className="text-white/70">
-              Aspiring full-stack engineer focused on clean architectures, interactive 3D web interfaces, and modern AI agent pipelines.
+              Web developer from Indonesia. Building clean web apps, 3D simulations in Three.js, and practical AI tools.
             </div>
             <div className="text-white/50 text-[11px]">
               Location: {portfolioConfig.location} | GitHub: @{portfolioConfig.githubUsername}
@@ -346,13 +365,47 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           </div>
         ),
       };
+    } else if (lower === 'joke' || lower === 'jokes') {
+      const joke = DEV_JOKES[Math.floor(Math.random() * DEV_JOKES.length)];
+      responseOutput = {
+        id: `resp-${Date.now()}`,
+        type: 'output',
+        content: (
+          <div className="py-1 text-xs md:text-sm font-mono text-[#CCFF00] space-y-1">
+            <div className="text-white/50 text-[11px]">[DEV JOKE]</div>
+            <div>{joke}</div>
+          </div>
+        ),
+      };
+    } else if (lower === 'coffee') {
+      responseOutput = {
+        id: `resp-${Date.now()}`,
+        type: 'output',
+        content: (
+          <div className="py-1 text-xs md:text-sm font-mono text-amber-300 space-y-1">
+            <div>HTTP 418: I am a teapot.</div>
+            <div className="text-white/80">Caffeine buffer at 100%. Ready to compile.</div>
+          </div>
+        ),
+      };
+    } else if (lower === 'git status' || lower === 'status') {
+      responseOutput = {
+        id: `resp-${Date.now()}`,
+        type: 'output',
+        content: (
+          <div className="py-1 text-xs md:text-sm font-mono text-emerald-400 space-y-1">
+            <div>On branch main. Your branch is up to date with 'origin/main'.</div>
+            <div className="text-white/70">nothing to commit, working tree clean.</div>
+          </div>
+        ),
+      };
     } else if (lower === 'sudo' || lower === 'secret') {
       responseOutput = {
         id: `resp-${Date.now()}`,
         type: 'output',
         content: (
           <div className="py-1 text-xs md:text-sm font-mono text-amber-300">
-            [ACCESS GRANTED] You already possess full privileges here! Build boldly, learn relentlessly.
+            [ACCESS GRANTED] Elevated privileges active. Ready to build.
           </div>
         ),
       };
@@ -520,7 +573,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
             </h2>
           </div>
           <p className="text-white/70 max-w-md text-sm md:text-base font-medium">
-            An interactive environment to test and explore my workflow directly. Run commands, inspect APIs, or simulate builds.
+            An interactive console to test and explore my workflow directly. Run commands, inspect JSON payloads, or test for developer easter eggs.
           </p>
         </motion.div>
 

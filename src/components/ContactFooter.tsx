@@ -27,15 +27,15 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
         {/* Top Sticker Badge */}
         <div className="inline-flex items-center gap-2 bg-[#CCFF00] text-black font-black text-[11px] sm:text-xs px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full uppercase tracking-wider mb-6 rotate-[-2deg] shadow-lg max-w-[calc(100vw-2rem)] text-center">
           <Sparkles className="w-4 h-4 shrink-0" />
-          <span className="truncate sm:overflow-visible">Always Open For Mentorship & Learning</span>
+          <span className="truncate sm:overflow-visible">Open for mentorship, code reviews & cool projects (or memes)</span>
         </div>
 
         {/* Big Heading */}
         <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tight text-white mb-4">
-          LET'S CONNECT & BUILD
+          LET'S BUILD SOMETHING THAT DOESN'T CRASH
         </h2>
         <p className="text-white/80 font-medium text-sm md:text-lg max-w-xl mx-auto mb-10">
-          Whether you have feedback on my code, advice for an aspiring developer, or an interesting project to share, I'd love to hear from you!
+          Got feedback on my code, advice for an ambitious developer, or want to debate tabs vs. spaces? My inbox is always open. Let's talk tech.
         </p>
 
         {/* Action Buttons */}
@@ -63,7 +63,7 @@ export const ContactFooter: React.FC<ContactFooterProps> = ({ theme = 'classic' 
           <div className="flex items-center gap-1.5">
             <span>Crafted with</span>
             <Heart className="w-3.5 h-3.5 text-[#CCFF00] fill-[#CCFF00]" />
-            <span>by {portfolioConfig.name}</span>
+            <span>and plenty of coffee by {portfolioConfig.name}</span>
             <span>• 2026</span>
           </div>
 

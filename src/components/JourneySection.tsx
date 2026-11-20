@@ -28,7 +28,7 @@ export const JourneySection: React.FC = () => {
             MY JOURNEY SO FAR
           </h2>
           <p className="text-black/60 font-semibold text-sm md:text-base max-w-lg mx-auto mt-2">
-            No overnight shortcuts — just building small things daily, breaking them, and learning how they truly work.
+            No overnight shortcuts, no guru bootcamps — just building small things daily, breaking them, and figuring out why.
           </p>
         </motion.div>
 
