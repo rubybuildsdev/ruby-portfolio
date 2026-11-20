@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { portfolioConfig } from '../data/portfolioData';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Volume2, VolumeOff } from 'lucide-react';
 import { GithubIcon as Github } from './Icons';
 
 interface NavbarProps {
   theme?: 'classic' | 'cyber';
+  isMuted?: boolean;
+  onToggleMute?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  theme = 'classic',
+  isMuted = false,
+  onToggleMute,
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isBright, setIsBright] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
@@ -30,7 +36,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
       for (let i = 0; i < brightSections.length; i++) {
         const section = brightSections[i];
         const rect = section.getBoundingClientRect();
-        // Trigger bright theme proactively when section overlaps navbar vertical bounds
         if (rect.top <= navBottom - 10 && rect.bottom >= navTop + 10) {
           overBright = true;
           break;
@@ -52,7 +57,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
           const el = document.getElementById(id);
           if (el) {
             const rect = el.getBoundingClientRect();
-            // Section considered active if its upper part has reached viewing zone
             if (rect.top <= winHeight * 0.4 && rect.bottom >= 100) {
               current = id;
             }
@@ -70,7 +74,6 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
       });
     };
 
-    // Initial check after mount & paint
     checkState();
     const timer = setTimeout(checkState, 80);
 
@@ -180,8 +183,24 @@ export const Navbar: React.FC<NavbarProps> = ({ theme = 'classic' }) => {
             })}
           </div>
 
-          {/* Action Button: GitHub Profile */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Action Buttons: Sound Toggle + GitHub Profile */}
+          <div className="hidden md:flex items-center gap-2.5">
+            {onToggleMute && (
+              <button
+                type="button"
+                onClick={onToggleMute}
+                aria-label={isMuted ? 'Unmute UI sounds' : 'Mute UI sounds'}
+                aria-pressed={isMuted}
+                title={isMuted ? 'Unmute UI sounds' : 'Mute UI sounds'}
+                className={`p-2 rounded-full border transition-all duration-200 cursor-pointer ${
+                  isBright
+                    ? 'border-neutral-900/20 text-neutral-900 hover:bg-neutral-900 hover:text-white'
+                    : 'border-white/35 text-white hover:bg-white hover:text-[#0038FF]'
+                }`}
+              >
+                {isMuted ? <VolumeOff className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+            )}
             <a
               href={portfolioConfig.githubUrl}
               target="_blank"

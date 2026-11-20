@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { portfolioConfig } from '../data/portfolioData';
 import { Terminal, CornerDownLeft, Sparkles, CheckCircle2, RotateCcw, Palette, ExternalLink, Volume2, VolumeOff } from 'lucide-react';
+import { playKeyClickSound } from '../lib/soundFx';
 
 interface TerminalOutput {
   id: string;
@@ -12,10 +13,8 @@ interface TerminalOutput {
 interface TerminalPlaygroundProps {
   theme: 'classic' | 'cyber';
   onToggleTheme: () => void;
-}
-
-interface WindowWithWebkitAudio extends Window {
-  webkitAudioContext?: typeof AudioContext;
+  isMuted: boolean;
+  onToggleMute: () => void;
 }
 
 const DEV_JOKES = [
@@ -29,7 +28,7 @@ const DEV_JOKES = [
   "There's no place like 127.0.0.1 (unless you're on production, then godspeed).",
 ];
 
-export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, onToggleTheme }) => {
+export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, onToggleTheme, isMuted, onToggleMute }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -44,9 +43,6 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
   // Screen shake state
   const [isShaking, setIsShaking] = useState(false);
 
-  // Keyboard sound FX state
-  const [isMuted, setIsMuted] = useState(false);
-  const audioCtxRef = useRef<AudioContext | null>(null);
 
   const logsContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -99,29 +95,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
     actionTimers.current.push(id);
   }, []);
 
-  const playKeyClick = useCallback(() => {
-    if (isMuted) return;
-    try {
-      if (!audioCtxRef.current) {
-        const AudioCtx = window.AudioContext || (window as WindowWithWebkitAudio).webkitAudioContext;
-        if (!AudioCtx) return;
-        audioCtxRef.current = new AudioCtx();
-      }
-      const ctx = audioCtxRef.current;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      gain.gain.setValueAtTime(0.03, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.02);
-    } catch {
-      // Silently ignore audio errors
-    }
-  }, [isMuted]);
+
 
   const handleCommandExecution = (command: string) => {
     const trimmed = command.trim();
@@ -615,7 +589,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsMuted((prev) => !prev);
+                  onToggleMute();
                 }}
                 aria-label={isMuted ? 'Unmute keyboard sounds' : 'Mute keyboard sounds'}
                 aria-pressed={isMuted}
@@ -698,7 +672,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 interruptAutoDemo();
               }}
               onKeyDown={(e) => {
-                playKeyClick();
+                playKeyClickSound();
                 handleKeyDown(e);
               }}
               disabled={isRunningTest}
