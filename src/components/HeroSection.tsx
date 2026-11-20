@@ -16,19 +16,23 @@ const TypingHeading: React.FC<{
   const [displayedLength, setDisplayedLength] = useState(0);
 
   useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | undefined;
+
     const timeout = setTimeout(() => {
       let current = 0;
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         current += 1;
         setDisplayedLength(current);
         if (current >= text.length) {
           clearInterval(interval);
         }
       }, speedMs);
-      return () => clearInterval(interval);
     }, delayMs);
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [text, delayMs, speedMs]);
 
   const isTyping = displayedLength < text.length;

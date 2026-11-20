@@ -53,7 +53,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ theme = 'class
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-[2.2rem] p-5 md:p-6 flex flex-col justify-between hover:bg-white/15 hover:border-[#CCFF00] hover:shadow-[0_20px_45px_rgba(204,255,0,0.22)] transition-all duration-300 shadow-2xl group cursor-pointer relative overflow-hidden"
+              className="bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-[2.2rem] p-5 md:p-6 flex flex-col justify-between hover:bg-white/15 hover:border-[#CCFF00] hover:shadow-[0_20px_45px_rgba(204,255,0,0.22)] transition-all duration-300 shadow-2xl group relative overflow-hidden"
             >
               <div>
                 {/* Header Category & Badge */}

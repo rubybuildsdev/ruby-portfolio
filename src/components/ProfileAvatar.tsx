@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 
 export const ProfileAvatar: React.FC = () => {
-  const [imgSrc, setImgSrc] = useState('/images/profile/avatar-optimized.jpg');
-
   return (
     <div className="relative w-full flex flex-col items-center select-none">
       {/* Neo-Brutalist Frame Container with Lift & Shadow Expansion Hover */}
@@ -27,9 +25,8 @@ export const ProfileAvatar: React.FC = () => {
           
           {/* Profile Photo - Clean, crisp, no grid overlay, no cutout fringe */}
           <img
-            src={imgSrc}
+            src="/images/profile/avatar-optimized.jpg"
             alt="Ruby Profile Avatar"
-            onError={() => setImgSrc('/images/profile/avatar.jpg')}
             className="w-full h-full object-cover object-center relative z-10 group-hover:scale-102 transition-transform duration-500"
             loading="eager"
           />

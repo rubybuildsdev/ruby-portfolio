@@ -17,8 +17,11 @@ export const CursorTrail: React.FC = () => {
   const cursorY = useSpring(-100, springConfig);
 
   useEffect(() => {
-    // Only run on desktop with pointer
-    if (window.matchMedia('(pointer: coarse)').matches) {
+    // Only run on desktop with pointer, and skip for users who asked for reduced motion
+    if (
+      window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       return;
     }
 

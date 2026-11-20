@@ -1,32 +1,67 @@
-# React + TypeScript + Vite
+# RUBY — Personal Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Portfolio pribadi untuk menampilkan keahlian sebagai Frontend / Full-Stack Developer. Dibangun dengan tema neo-brutalist bernuansa biru elektrik dan aksen neon volt, dengan hero interaktif, terminal playground, dan showcase proyek.
 
-Currently, two official plugins are available:
+**Live demo:** _(tambahkan link Vercel di sini)_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Fitur
 
-## React Compiler
+- **Hero interaktif** — judul yang diketik otomatis, teks yang bisa di-drag & dilempar, kartu kaca (glassmorphism) yang miring mengikuti kursor.
+- **Terminal Playground** — mini shell interaktif dengan command bawaan (`help`, `about`, `skills`, `projects`, `run test`, `theme --toggle`) dan auto-demo saat section terlihat.
+- **Projects showcase** — kartu proyek dengan tag teknologi, link ke GitHub, dan (opsional) link demo langsung.
+- **Journey timeline** — perjalanan belajar dari dasar web development hingga fokus saat ini.
+- **Custom cursor trail** di desktop, otomatis nonaktif di perangkat sentuh dan saat pengguna mengaktifkan `prefers-reduced-motion`.
+- Dua tema warna: `classic` (biru elektrik) dan `cyber` (gelap), bisa di-toggle dari Terminal Playground.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the Oxlint configuration
+- [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/) — build tool & dev server
+- [Tailwind CSS v4](https://tailwindcss.com/)
+- [Motion](https://motion.dev/) (framer-motion) — animasi
+- [Lucide React](https://lucide.dev/) — ikon
+- [Oxlint](https://oxc.rs/) — linting
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Menjalankan secara lokal
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Buka `http://localhost:5173` di browser.
+
+## Script yang tersedia
+
+| Script            | Keterangan                              |
+| ----------------- | ---------------------------------------- |
+| `npm run dev`      | Menjalankan dev server dengan HMR        |
+| `npm run build`    | Type-check (`tsc -b`) lalu build produksi |
+| `npm run preview`  | Preview hasil build produksi secara lokal |
+| `npm run lint`     | Menjalankan Oxlint                       |
+
+## Struktur Proyek
+
+```
+src/
+├── components/     # Semua komponen UI (Hero, Projects, Terminal, dll.)
+├── data/
+│   └── portfolioData.ts   # Konten portfolio (profil, proyek, journey) — edit di sini
+├── App.tsx
+├── main.tsx
+└── index.css
+public/
+└── images/         # Foto profil & screenshot proyek
+```
+
+Sebagian besar konten (nama, tagline, daftar proyek, link GitHub/email, timeline journey) terpusat di `src/data/portfolioData.ts`, sehingga bisa diperbarui tanpa menyentuh komponen.
+
+## Deploy
+
+Proyek ini dirancang untuk deploy ke [Vercel](https://vercel.com/):
+
+```bash
+npm run build
+```
+
+Output ada di folder `dist/`, siap di-deploy ke Vercel atau static host lainnya.
