@@ -16,87 +16,39 @@ import {
 } from './Icons';
 import { ProfileAvatar } from './ProfileAvatar';
 import { Sparkles, ArrowUpRight, Terminal, Code2 } from 'lucide-react';
+import { ToolchainMarquee, type ToolchainItem } from './ui/toolchain-marquee';
 
 interface TechItem {
   name: string;
   role: string;
   Icon: React.FC<{ className?: string }>;
-  tintBg: string;
-  tintBorder: string;
+  accent: string;
 }
 
 const CORE_TECHNOLOGIES: TechItem[] = [
-  {
-    name: 'PHP',
-    role: 'Backend & APIs',
-    Icon: PhpIcon,
-    tintBg: 'bg-[#777BB4]/12',
-    tintBorder: 'border-[#777BB4]/25',
-  },
-  {
-    name: 'JavaScript',
-    role: 'Web & Logic',
-    Icon: JavaScriptIcon,
-    tintBg: 'bg-[#F7DF1E]/15',
-    tintBorder: 'border-[#F7DF1E]/35',
-  },
-  {
-    name: 'TypeScript',
-    role: 'Type-Safe Code',
-    Icon: TypeScriptIcon,
-    tintBg: 'bg-[#007ACC]/12',
-    tintBorder: 'border-[#007ACC]/25',
-  },
-  {
-    name: 'MySQL',
-    role: 'Relational DB',
-    Icon: MySqlIcon,
-    tintBg: 'bg-[#00618A]/12',
-    tintBorder: 'border-[#00618A]/25',
-  },
-  {
-    name: 'Node.js',
-    role: 'Server Runtime',
-    Icon: NodeJsIcon,
-    tintBg: 'bg-[#539E43]/12',
-    tintBorder: 'border-[#539E43]/25',
-  },
-  {
-    name: 'Git',
-    role: 'Version Control',
-    Icon: GitIcon,
-    tintBg: 'bg-[#F34F29]/12',
-    tintBorder: 'border-[#F34F29]/25',
-  },
-  {
-    name: 'React',
-    role: 'UI Components',
-    Icon: ReactIcon,
-    tintBg: 'bg-[#61DAFB]/15',
-    tintBorder: 'border-[#61DAFB]/35',
-  },
-  {
-    name: 'Three.js',
-    role: '3D Graphics',
-    Icon: ThreeJsIcon,
-    tintBg: 'bg-black/6',
-    tintBorder: 'border-black/15',
-  },
-  {
-    name: 'Tailwind',
-    role: 'Modern Utility CSS',
-    Icon: TailwindIcon,
-    tintBg: 'bg-[#38BDF8]/12',
-    tintBorder: 'border-[#38BDF8]/25',
-  },
-  {
-    name: 'Vite',
-    role: 'Fast Bundler',
-    Icon: ViteIcon,
-    tintBg: 'bg-[#BD34FE]/12',
-    tintBorder: 'border-[#BD34FE]/25',
-  },
+  { name: 'PHP', role: 'Backend & APIs', Icon: PhpIcon, accent: '#777BB4' },
+  { name: 'JavaScript', role: 'Web & Logic', Icon: JavaScriptIcon, accent: '#F7DF1E' },
+  { name: 'TypeScript', role: 'Type-Safe Code', Icon: TypeScriptIcon, accent: '#007ACC' },
+  { name: 'MySQL', role: 'Relational DB', Icon: MySqlIcon, accent: '#00618A' },
+  { name: 'Node.js', role: 'Server Runtime', Icon: NodeJsIcon, accent: '#539E43' },
+  { name: 'Git', role: 'Version Control', Icon: GitIcon, accent: '#F34F29' },
+  { name: 'React', role: 'UI Components', Icon: ReactIcon, accent: '#61DAFB' },
+  { name: 'Three.js', role: '3D Graphics', Icon: ThreeJsIcon, accent: '#000000' },
+  { name: 'Tailwind', role: 'Modern Utility CSS', Icon: TailwindIcon, accent: '#38BDF8' },
+  { name: 'Vite', role: 'Fast Bundler', Icon: ViteIcon, accent: '#BD34FE' },
 ];
+
+// Split the stack into two rows that scroll in opposite directions
+const TOOLCHAIN_STACKS: ToolchainItem[][] = [
+  CORE_TECHNOLOGIES.slice(0, 5),
+  CORE_TECHNOLOGIES.slice(5),
+].map((row) =>
+  row.map(({ name, Icon, accent }) => ({
+    label: name,
+    icon: <Icon className="w-4 h-4 sm:w-[1.1rem] sm:h-[1.1rem]" />,
+    accent,
+  }))
+);
 
 export const ProfileSection: React.FC = () => {
   return (
@@ -161,45 +113,18 @@ export const ProfileSection: React.FC = () => {
                 From full-stack reservation management systems with database transactions (Pink Outdoor), to interactive 3D Rubik's cube algorithms (CubeSolver), and voice-assisted AI tooling (WarungAI)—I learn by shipping working software daily.
               </p>
 
-              {/* Elevated Full-Color SVG Tech Stack */}
+              {/* Running Tech Stack Marquee */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-3.5">
                   <span className="text-xs font-black uppercase tracking-wider text-black/50">
                     Core Technologies & Tooling
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-wider bg-black/5 text-black/60 px-2.5 py-0.5 rounded-full">
-                    10 Verified Stacks
+                    {CORE_TECHNOLOGIES.length} Verified Stacks
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-2.5">
-                  {CORE_TECHNOLOGIES.map((tech) => {
-                    const IconComponent = tech.Icon;
-                    return (
-                      <div
-                        key={tech.name}
-                        className="group flex items-center gap-2 sm:gap-3 bg-white border-2 border-gray-200/80 hover:border-black hover:shadow-[3px_3px_0px_#0038FF] hover:-translate-y-0.5 p-1.5 sm:p-2 rounded-2xl transition-all duration-200 cursor-default min-w-0"
-                      >
-                        {/* Dedicated Squircle Frame with Brand Tint */}
-                        <div
-                          className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center p-1 sm:p-1.5 shrink-0 border ${tech.tintBg} ${tech.tintBorder} group-hover:scale-105 transition-transform duration-200 shadow-2xs`}
-                        >
-                          <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </div>
-
-                        {/* Name and Role Subtitle */}
-                        <div className="min-w-0 flex flex-col overflow-hidden">
-                          <span className="font-black text-xs text-black tracking-tight leading-snug truncate">
-                            {tech.name}
-                          </span>
-                          <span className="text-[9px] sm:text-[10px] font-bold text-black/45 tracking-tight leading-none truncate">
-                            {tech.role}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                <ToolchainMarquee stacks={TOOLCHAIN_STACKS} duration={24} rows={2} />
               </div>
 
               {/* Action Buttons */}
