@@ -24,6 +24,37 @@ html, body, #root {
   background-size: 4rem 4rem;
 }
 
+/* Global High-Contrast Keyboard Focus Ring */
+:focus-visible {
+  outline: 2px solid #CCFF00;
+  outline-offset: 3px;
+}
+
+[data-brightness="bright"] :focus-visible {
+  outline-color: #0038FF;
+}
+
+/* Skip to Content Link for Keyboard Users */
+.skip-to-content {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  background: #CCFF00;
+  color: #000000;
+  font-weight: 900;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  border: 2px solid #000000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: top 0.15s ease;
+}
+
+.skip-to-content:focus {
+  top: 1rem;
+}
+
 /* Responsive Neo-Brutalist Heading Extrusion */
 .hero-heading-shadow {
   font-family: "Arial Black", Impact, sans-serif;
@@ -85,6 +116,35 @@ html, body, #root {
 
 .animate-shake {
   animation: shake 0.3s ease-in-out;
+}
+
+/* Lite Mode: disable heavy backdrop blurs & looping CSS animations while preserving readability */
+html.lite-mode {
+  scroll-behavior: auto !important;
+}
+
+.lite-mode [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.lite-mode .animate-spin,
+.lite-mode .animate-ping,
+.lite-mode .animate-pulse,
+.lite-mode [class*="animate-[spin"] {
+  animation: none !important;
+}
+
+.lite-mode .glass-fallback-dark {
+  background-color: rgba(10, 14, 24, 0.92) !important;
+}
+
+.lite-mode .glass-fallback-bright {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+}
+
+.lite-mode .glass-fallback-card {
+  background-color: rgba(16, 36, 112, 0.92) !important;
 }
 
 /* Custom utility for clean mobile scrolling */

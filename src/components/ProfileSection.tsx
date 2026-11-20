@@ -6,12 +6,14 @@ import {
   JavaScriptIcon,
   TypeScriptIcon,
   MySqlIcon,
+  PostgresIcon,
   NodeJsIcon,
   GitIcon,
   ReactIcon,
   ThreeJsIcon,
   TailwindIcon,
   ViteIcon,
+  GeminiIcon,
   GithubIcon
 } from './Icons';
 import { ProfileAvatar } from './ProfileAvatar';
@@ -30,18 +32,20 @@ const CORE_TECHNOLOGIES: TechItem[] = [
   { name: 'JavaScript', role: 'Web & Logic', Icon: JavaScriptIcon, accent: '#F7DF1E' },
   { name: 'TypeScript', role: 'Type-Safe Code', Icon: TypeScriptIcon, accent: '#007ACC' },
   { name: 'MySQL', role: 'Relational DB', Icon: MySqlIcon, accent: '#00618A' },
+  { name: 'PostgreSQL', role: 'Relational DB', Icon: PostgresIcon, accent: '#336791' },
   { name: 'Node.js', role: 'Server Runtime', Icon: NodeJsIcon, accent: '#539E43' },
   { name: 'Git', role: 'Version Control', Icon: GitIcon, accent: '#F34F29' },
   { name: 'React', role: 'UI Components', Icon: ReactIcon, accent: '#61DAFB' },
   { name: 'Three.js', role: '3D Graphics', Icon: ThreeJsIcon, accent: '#000000' },
   { name: 'Tailwind', role: 'Modern Utility CSS', Icon: TailwindIcon, accent: '#38BDF8' },
   { name: 'Vite', role: 'Fast Bundler', Icon: ViteIcon, accent: '#BD34FE' },
+  { name: 'Gemini API', role: 'AI Integration', Icon: GeminiIcon, accent: '#5B76EC' },
 ];
 
 // Split the stack into two rows that scroll in opposite directions
 const TOOLCHAIN_STACKS: ToolchainItem[][] = [
-  CORE_TECHNOLOGIES.slice(0, 5),
-  CORE_TECHNOLOGIES.slice(5),
+  CORE_TECHNOLOGIES.slice(0, 6),
+  CORE_TECHNOLOGIES.slice(6),
 ].map((row) =>
   row.map(({ name, Icon, accent }) => ({
     label: name,
@@ -67,13 +71,13 @@ export const ProfileSection: React.FC = () => {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 bg-black text-[#CCFF00] font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider mb-3 shadow-sm hover:scale-105 transition-transform cursor-default">
-            <Code2 className="w-3.5 h-3.5 text-[#CCFF00]" />
+            <Code2 className="w-3.5 h-3.5 text-[#CCFF00]" aria-hidden="true" />
             <span>Developer Profile</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
             WHO I AM
           </h2>
-          <p className="text-black/60 font-semibold text-sm md:text-base max-w-xl mx-auto mt-2">
+          <p className="text-neutral-700 font-semibold text-sm md:text-base max-w-xl mx-auto mt-2">
             A quick introduction to what I do, how I learn, and what I like building.
           </p>
         </motion.div>
@@ -97,7 +101,7 @@ export const ProfileSection: React.FC = () => {
             <div className="lg:col-span-7 flex flex-col justify-center">
 
               <div className="inline-flex items-center gap-1.5 text-[#0038FF] font-black text-xs uppercase tracking-wider mb-2">
-                <Sparkles className="w-4 h-4 text-[#0038FF]" />
+                <Sparkles className="w-4 h-4 text-[#0038FF]" aria-hidden="true" />
                 <span>Code • Build • Learn</span>
               </div>
 
@@ -105,21 +109,21 @@ export const ProfileSection: React.FC = () => {
                 Turning Ideas into Working Apps
               </h3>
 
-              <p className="text-black/70 text-sm md:text-base font-medium leading-relaxed mb-4">
+              <p className="text-neutral-800 text-sm md:text-base font-medium leading-relaxed mb-4">
                 I'm <strong className="text-black">{portfolioConfig.name}</strong>, a web developer from Indonesia. I enjoy building things from scratch to clean, interactive user interfaces to fast backends and 3D graphics in the browser.
               </p>
 
-              <p className="text-black/60 text-xs md:text-sm font-semibold leading-relaxed mb-7">
+              <p className="text-neutral-700 text-sm font-semibold leading-relaxed mb-7">
                 I learn best by shipping. Some of my favorite builds include an outdoor gear rental platform (Pink Outdoor), a browser-based 3D Rubik's Cube solver (CubeSolver), and an AI-powered POS assistant for local shops (WarungAI).
               </p>
 
               {/* Running Tech Stack Marquee */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-3.5">
-                  <span className="text-xs font-black uppercase tracking-wider text-black/50">
+                  <span className="text-xs font-black uppercase tracking-wider text-neutral-700">
                     Core Technologies & Tooling
                   </span>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-black/5 text-black/60 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-black/5 text-neutral-700 px-2.5 py-0.5 rounded-full">
                     {CORE_TECHNOLOGIES.length} Verified Technologies
                   </span>
                 </div>
@@ -131,9 +135,9 @@ export const ProfileSection: React.FC = () => {
               <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-4 border-t border-gray-200/80">
                 <a
                   href="#playground"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full bg-[#0038FF] text-white font-black text-xs md:text-sm hover:bg-[#CCFF00] hover:text-black transition-colors shadow-sm"
+                  className="min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full bg-[#0038FF] text-white font-black text-xs md:text-sm hover:bg-[#CCFF00] hover:text-black transition-colors shadow-sm"
                 >
-                  <Terminal className="w-4 h-4" />
+                  <Terminal className="w-4 h-4" aria-hidden="true" />
                   <span>Try Live Terminal</span>
                 </a>
 
@@ -141,11 +145,11 @@ export const ProfileSection: React.FC = () => {
                   href={portfolioConfig.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full border-2 border-black bg-white text-black font-bold text-xs md:text-sm hover:bg-black hover:text-white transition-colors"
+                  className="min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 rounded-full border-2 border-black bg-white text-black font-bold text-xs md:text-sm hover:bg-black hover:text-white transition-colors"
                 >
                   <GithubIcon className="w-4 h-4" />
                   <span>View GitHub Profile</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
                 </a>
               </div>
 

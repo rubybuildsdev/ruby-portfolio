@@ -15,7 +15,26 @@ interface TerminalPlaygroundProps {
   onToggleTheme: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
+  isOptimized?: boolean;
+  onToggleOptimize?: () => void;
 }
+
+const AUTOCOMPLETE_COMMANDS = [
+  'help',
+  'about',
+  'whoami',
+  'skills',
+  'projects',
+  'run test',
+  'joke',
+  'coffee',
+  'curl /api/portfolio',
+  'theme --toggle',
+  'lite --toggle',
+  'contact',
+  'git status',
+  'clear',
+];
 
 const DEV_JOKES = [
   "Why do programmers prefer dark mode? Because light attracts bugs.",
@@ -28,7 +47,7 @@ const DEV_JOKES = [
   "There's no place like 127.0.0.1 (unless you're on production, then godspeed).",
 ];
 
-export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, onToggleTheme, isMuted, onToggleMute }) => {
+export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, onToggleTheme, isMuted, onToggleMute, isOptimized = false, onToggleOptimize }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
@@ -162,6 +181,9 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 <span className="text-sky-400 font-bold">theme --toggle</span> : Switch page visual theme
               </div>
               <div>
+                <span className="text-sky-400 font-bold">lite --toggle</span> : Toggle Lite Mode performance
+              </div>
+              <div>
                 <span className="text-sky-400 font-bold">contact</span> : Get direct email & GitHub
               </div>
               <div>
@@ -169,7 +191,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
               </div>
             </div>
             <div className="text-white/40 text-[11px] pt-1">
-              Tip: You can also click any chip above the input box!
+              Tip: Press Tab to autocomplete commands or click any chip above!
             </div>
           </div>
         ),
@@ -315,6 +337,20 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           </div>
         ),
       };
+    } else if (lower.includes('lite') || lower.includes('optimize')) {
+      if (onToggleOptimize) {
+        onToggleOptimize();
+      }
+      const nextState = !isOptimized ? 'ON (Lite Mode active)' : 'OFF (Full effects active)';
+      responseOutput = {
+        id: `resp-${Date.now()}`,
+        type: 'success',
+        content: (
+          <div className="flex items-center gap-2 py-1 text-xs md:text-sm font-mono text-[#CCFF00]">
+            <span>Lite Mode toggled! Status: <strong>{nextState}</strong></span>
+          </div>
+        ),
+      };
     } else if (lower.includes('theme')) {
       onToggleTheme();
       const nextTheme = theme === 'classic' ? 'Cyber Dark Monochrome' : 'Classic Electric Blue';
@@ -418,6 +454,14 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
       const nextIdx = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
       setHistoryIndex(nextIdx);
       setInputVal(history[nextIdx]);
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      const q = inputVal.trim().toLowerCase();
+      if (!q) return;
+      const match = AUTOCOMPLETE_COMMANDS.find((c) => c.startsWith(q));
+      if (match) {
+        setInputVal(match);
+      }
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (historyIndex === -1) return;
@@ -506,12 +550,14 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
 
   // Cleanup all timers on unmount
   useEffect(() => {
+    const autoTimers = autoDemoTimers.current;
+    const actTimers = actionTimers.current;
     return () => {
-      autoDemoTimers.current.forEach((id) => {
+      autoTimers.forEach((id) => {
         clearTimeout(id);
         clearInterval(id);
       });
-      actionTimers.current.forEach((id) => clearTimeout(id));
+      actTimers.forEach((id) => clearTimeout(id));
     };
   }, []);
 
@@ -561,7 +607,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          className={`w-full rounded-2xl md:rounded-3xl border border-white/20 bg-black/45 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col ${isShaking ? 'animate-shake' : ''}`}
+          className={`glass-fallback-dark w-full rounded-2xl md:rounded-3xl border border-white/20 bg-black/45 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col ${isShaking ? 'animate-shake' : ''}`}
           onClick={() => {
             interruptAutoDemo();
           }}
@@ -625,7 +671,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
                 type="button"
                 onClick={() => handleCommandExecution(chip.cmd)}
                 disabled={isRunningTest}
-                className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-[#CCFF00] hover:text-black text-white font-mono text-xs font-semibold transition-all border border-white/10 hover:border-transparent shrink-0 cursor-pointer active:scale-95"
+                className="min-h-[44px] sm:min-h-0 px-3 sm:px-2.5 py-1 rounded-md bg-white/10 hover:bg-[#CCFF00] hover:text-black text-white font-mono text-xs font-semibold transition-all border border-white/10 hover:border-transparent shrink-0 cursor-pointer active:scale-95"
               >
                 {chip.label}
               </button>

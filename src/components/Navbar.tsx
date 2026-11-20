@@ -34,7 +34,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       const navTop = navEl ? navEl.getBoundingClientRect().top : 16;
       const navBottom = navEl ? navEl.getBoundingClientRect().bottom : 76;
 
-      // 1. Detect Bright Section Overlap (#profile, #journey, or data-brightness="bright")
       const brightSections = document.querySelectorAll(
         '#profile, #journey, [data-brightness="bright"]'
       );
@@ -50,7 +49,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       }
       setIsBright((prev) => (prev !== overBright ? overBright : prev));
 
-      // 2. Active Section Spy for Navigation Hierarchy
       const sectionIds = ['profile', 'projects', 'playground', 'journey', 'contact'];
       const scrollY = window.scrollY || window.pageYOffset || 0;
       const docHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 1;
@@ -95,7 +93,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, []);
 
-  // Close dropdowns on Escape key or outside click
   useEffect(() => {
     if (!mobileMenuOpen && !settingsOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -130,10 +127,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     <div
       className={`animate-slide-down absolute top-full right-0 mt-2.5 w-64 backdrop-blur-2xl border rounded-2xl p-3.5 shadow-2xl z-50 flex flex-col gap-2 ${
         isBright
-          ? 'bg-white/90 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.14)]'
+          ? 'glass-fallback-bright bg-white/90 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.14)]'
           : theme === 'cyber'
-          ? 'bg-[#08090E]/95 border-white/20 text-white'
-          : 'bg-[#00229E]/95 border-white/25 text-white'
+          ? 'glass-fallback-dark bg-[#08090E]/95 border-white/20 text-white'
+          : 'glass-fallback-card bg-[#00229E]/95 border-white/25 text-white'
       }`}
       style={{
         backdropFilter: 'blur(20px)',
@@ -141,23 +138,26 @@ export const Navbar: React.FC<NavbarProps> = ({
       }}
     >
       <div className="flex items-center justify-between px-1 pb-1.5 border-b border-current/10">
-        <span className="text-[11px] font-black uppercase tracking-wider opacity-70">
+        <span className="text-[11px] font-black uppercase tracking-wider opacity-80">
           Quick Settings
         </span>
       </div>
 
-      {/* Sound FX Toggle */}
       {onToggleMute && (
         <button
           type="button"
           onClick={onToggleMute}
           aria-pressed={!isMuted}
-          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`min-h-[44px] md:min-h-0 w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
             isBright ? 'hover:bg-neutral-900/5' : 'hover:bg-white/10'
           }`}
         >
           <span className="flex items-center gap-2">
-            {isMuted ? <VolumeOff className="w-4 h-4 opacity-60" /> : <Volume2 className="w-4 h-4 text-[#CCFF00]" />}
+            {isMuted ? (
+              <VolumeOff className="w-4 h-4 opacity-60" aria-hidden="true" />
+            ) : (
+              <Volume2 className="w-4 h-4 text-[#CCFF00]" aria-hidden="true" />
+            )}
             <span>Sound FX</span>
           </span>
           <span
@@ -165,8 +165,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               !isMuted
                 ? 'bg-[#CCFF00] text-black'
                 : isBright
-                ? 'bg-neutral-200 text-neutral-600'
-                : 'bg-white/10 text-white/60'
+                ? 'bg-neutral-200 text-neutral-700'
+                : 'bg-white/15 text-white/80'
             }`}
           >
             {isMuted ? 'Off' : 'On'}
@@ -174,18 +174,17 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
       )}
 
-      {/* Performance / Optimization Mode Toggle */}
       {onToggleOptimize && (
         <button
           type="button"
           onClick={onToggleOptimize}
           aria-pressed={isOptimized}
-          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`min-h-[44px] md:min-h-0 w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
             isBright ? 'hover:bg-neutral-900/5' : 'hover:bg-white/10'
           }`}
         >
           <span className="flex items-center gap-2">
-            <Zap className={`w-4 h-4 ${isOptimized ? 'text-[#CCFF00]' : 'opacity-70'}`} />
+            <Zap className={`w-4 h-4 ${isOptimized ? 'text-[#CCFF00]' : 'opacity-70'}`} aria-hidden="true" />
             <span>Lite Mode</span>
           </span>
           <span
@@ -193,8 +192,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               isOptimized
                 ? 'bg-[#CCFF00] text-black'
                 : isBright
-                ? 'bg-neutral-200 text-neutral-600'
-                : 'bg-white/10 text-white/60'
+                ? 'bg-neutral-200 text-neutral-700'
+                : 'bg-white/15 text-white/80'
             }`}
           >
             {isOptimized ? 'On' : 'Off'}
@@ -202,17 +201,16 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
       )}
 
-      {/* Theme Toggle */}
       {onToggleTheme && (
         <button
           type="button"
           onClick={onToggleTheme}
-          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`min-h-[44px] md:min-h-0 w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
             isBright ? 'hover:bg-neutral-900/5' : 'hover:bg-white/10'
           }`}
         >
           <span className="flex items-center gap-2">
-            <Palette className="w-4 h-4 opacity-80" />
+            <Palette className="w-4 h-4 opacity-80" aria-hidden="true" />
             <span>Theme</span>
           </span>
           <span
@@ -236,15 +234,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       ref={navContainerRef}
       className="sticky top-3 md:top-4 z-40 px-3 sm:px-4 md:px-8 max-w-[1440px] mx-auto w-full transition-all duration-300 pointer-events-auto"
     >
-      <nav className="relative z-30 w-full">
+      <nav aria-label="Primary" className="relative z-30 w-full">
         {/* Main Floating Navbar Pill */}
         <div
           className={`flex items-center justify-between px-3.5 sm:px-5 py-2.5 sm:py-3 md:px-7 md:py-3.5 w-full backdrop-blur-xl rounded-full md:rounded-[2.4rem] transition-all duration-300 ${
             isBright
-              ? 'bg-white/70 border border-neutral-900/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
+              ? 'glass-fallback-bright bg-white/70 border border-neutral-900/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
               : theme === 'cyber'
-              ? 'bg-[#08090E]/80 border border-white/20 shadow-2xl shadow-black/40'
-              : 'bg-white/20 border border-white/35 shadow-2xl shadow-black/20'
+              ? 'glass-fallback-dark bg-[#08090E]/80 border border-white/20 shadow-2xl shadow-black/40'
+              : 'glass-fallback-card bg-white/20 border border-white/35 shadow-2xl shadow-black/20'
           }`}
           style={{
             backdropFilter: 'blur(16px)',
@@ -290,7 +288,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         : 'text-neutral-800 hover:text-black hover:bg-neutral-900/10'
                       : isActive
                       ? 'bg-white/30 text-[#CCFF00] border border-white/40 shadow-sm backdrop-blur-md scale-105'
-                      : 'text-white/85 hover:text-white hover:bg-white/15'
+                      : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {item.label}
@@ -299,7 +297,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </div>
 
-          {/* Desktop Action Buttons: Compact Settings + GitHub Profile */}
+          {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center gap-2.5 relative">
             <button
               type="button"
@@ -315,7 +313,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'border-white/35 text-white hover:bg-white hover:text-[#0038FF]'
               }`}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-4 h-4" aria-hidden="true" />
             </button>
 
             <a
@@ -330,13 +328,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Github className="w-4 h-4" />
               <span>GitHub Profile</span>
-              <ArrowUpRight className="w-3.5 h-3.5 opacity-70" />
+              <ArrowUpRight className="w-3.5 h-3.5 opacity-70" aria-hidden="true" />
             </a>
 
             {settingsOpen && renderSettingsPanel()}
           </div>
 
-          {/* Mobile Controls: Compact Settings + Menu Button */}
+          {/* Mobile Controls (44x44px minimum touch targets) */}
           <div className="flex md:hidden items-center gap-2 relative">
             <button
               type="button"
@@ -346,7 +344,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               aria-expanded={settingsOpen}
               aria-label="Open quick settings"
-              className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl border backdrop-blur-md transition-all ${
                 settingsOpen
                   ? 'bg-[#CCFF00] text-black border-[#CCFF00]'
                   : isBright
@@ -354,7 +352,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'border-white/35 text-white bg-white/15 hover:bg-white/25'
               }`}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-5 h-5" aria-hidden="true" />
             </button>
 
             <button
@@ -365,13 +363,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               aria-expanded={mobileMenuOpen}
               aria-label="Toggle menu"
-              className={`p-2 rounded-xl border backdrop-blur-md transition-all ${
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl border backdrop-blur-md transition-all ${
                 isBright
                   ? 'border-neutral-900/20 text-neutral-900 bg-neutral-900/5 hover:bg-neutral-900/10'
                   : 'border-white/35 text-white bg-white/15 hover:bg-white/25'
               }`}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
             </button>
 
             {settingsOpen && renderSettingsPanel()}
@@ -383,10 +381,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div
             className={`animate-slide-down absolute top-full left-0 right-0 mt-2 backdrop-blur-2xl border rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col gap-2 z-50 md:hidden ${
               isBright
-                ? 'bg-white/85 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.12)]'
+                ? 'glass-fallback-bright bg-white/85 border-neutral-900/15 text-neutral-900 shadow-[0_16px_40px_rgba(0,0,0,0.12)]'
                 : theme === 'cyber'
-                ? 'bg-[#08090E]/85 border-white/20 text-white'
-                : 'bg-[#0028B8]/85 border-white/25 text-white'
+                ? 'glass-fallback-dark bg-[#08090E]/85 border-white/20 text-white'
+                : 'glass-fallback-card bg-[#0028B8]/85 border-white/25 text-white'
             }`}
             style={{
               backdropFilter: 'blur(20px)',
@@ -400,7 +398,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={item.label}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`font-bold text-sm py-2 px-3 rounded-xl transition-all flex items-center justify-between ${
+                  className={`min-h-[44px] font-bold text-sm py-2 px-3 rounded-xl transition-all flex items-center justify-between ${
                     isBright
                       ? isActive
                         ? 'bg-neutral-900 text-white shadow-sm'
@@ -423,11 +421,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               href={portfolioConfig.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#CCFF00] text-black font-black text-sm hover:bg-black hover:text-white transition-colors mt-2"
+              className="min-h-[44px] flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#CCFF00] text-black font-black text-sm hover:bg-black hover:text-white transition-colors mt-2"
             >
               <Github className="w-4 h-4" />
               <span>GitHub Profile</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </a>
           </div>
         )}

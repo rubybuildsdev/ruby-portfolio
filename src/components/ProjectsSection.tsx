@@ -23,12 +23,12 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         theme === 'cyber' ? 'bg-[#08090E]' : 'bg-[#0038FF]'
       }`}
     >
-      {/* Background Subtle Gradient Grid - EXACT MATCH to HERO and PLAYGROUND */}
+      {/* Background Subtle Gradient Grid */}
       <div className="absolute inset-0 bg-grid-pattern pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
 
-        {/* Section Heading with Scroll Reveal */}
+        {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -38,19 +38,19 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
         >
           <div>
             <div className="inline-flex items-center gap-1.5 text-[#CCFF00] font-black text-xs uppercase tracking-wider mb-2">
-              <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '6s' }} />
+              <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '6s' }} aria-hidden="true" />
               <span>Battle-Tested & Explorations</span>
             </div>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white">
               FEATURED PROJECTS
             </h2>
           </div>
-          <p className="text-white/70 max-w-md text-sm md:text-base font-medium">
+          <p className="text-white/85 max-w-md text-sm md:text-base font-medium">
             Real code running in the wild. No lorem ipsum, no fake mockups, and zero stickers peeled off the Rubik's cube.
           </p>
         </motion.div>
 
-        {/* Projects Grid with Staggered Scroll Entrance */}
+        {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {portfolioConfig.projects.map((project, index) => {
             const mediaContent =
@@ -71,6 +71,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                   alt={project.title}
                   className="w-full h-full object-cover object-top group-hover/img:scale-108 transition-transform duration-700 ease-out"
                   loading="lazy"
+                  decoding="async"
                 />
               ) : null;
 
@@ -82,7 +83,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 whileHover={{ y: -10, scale: 1.02 }}
-                className="bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-[2.2rem] p-5 md:p-6 flex flex-col justify-between hover:bg-white/15 hover:border-[#CCFF00] hover:shadow-[0_20px_45px_rgba(204,255,0,0.22)] transition-all duration-300 shadow-2xl group relative overflow-hidden"
+                className="glass-fallback-card bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-[2.2rem] p-5 md:p-6 flex flex-col justify-between hover:bg-white/15 hover:border-[#CCFF00] hover:shadow-[0_20px_45px_rgba(204,255,0,0.22)] transition-all duration-300 shadow-2xl group relative overflow-hidden"
               >
                 <div>
                   {/* Header Category & Badge */}
@@ -102,7 +103,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     ) : null}
                   </div>
 
-                  {/* Project Media Preview Cover with Hover Zoom & Shine */}
+                  {/* Project Media Preview Cover */}
                   {mediaContent && (
                     project.demoUrl ? (
                       <a
@@ -114,9 +115,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       >
                         {mediaContent}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-                        <div className="absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md border border-white/20 text-[#CCFF00] text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 shadow-md">
+                        <div className="glass-fallback-dark absolute bottom-2.5 right-2.5 bg-black/75 backdrop-blur-md border border-white/20 text-[#CCFF00] text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 shadow-md">
                           <span>Live Demo</span>
-                          <ExternalLink className="w-3 h-3 text-[#CCFF00]" />
+                          <ExternalLink className="w-3 h-3 text-[#CCFF00]" aria-hidden="true" />
                         </div>
                       </a>
                     ) : (
@@ -133,39 +134,39 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     {project.title}
                   </h3>
                   {project.tagline && (
-                    <p className="text-[#CCFF00]/90 text-xs font-bold mb-3">
+                    <p className="text-[#CCFF00] text-xs sm:text-sm font-bold mb-3">
                       {project.tagline}
                     </p>
                   )}
 
                   {/* Description */}
-                  <p className="text-white/80 text-xs leading-relaxed mb-5 font-medium line-clamp-3">
+                  <p className="text-white/90 text-sm leading-relaxed mb-5 font-medium line-clamp-3">
                     {project.description}
                   </p>
 
-                  {/* Highlight banner with subtle pulse on hover */}
+                  {/* Highlight banner */}
                   {project.highlight && (
-                    <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 mb-5 text-[11px] font-semibold text-[#CCFF00] flex items-center gap-2 group-hover:border-[#CCFF00]/30 group-hover:bg-[#CCFF00]/5 transition-all">
-                      <FolderGit2 className="w-4 h-4 flex-shrink-0" />
+                    <div className="bg-black/25 border border-white/15 rounded-xl p-2.5 mb-5 text-xs font-semibold text-[#CCFF00] flex items-center gap-2 group-hover:border-[#CCFF00]/30 group-hover:bg-[#CCFF00]/5 transition-all">
+                      <FolderGit2 className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                       <span>Focus: {project.highlight}</span>
                     </div>
                   )}
                 </div>
 
                 <div>
-                  {/* Tech Tags with Interactive Hover */}
+                  {/* Tech Tags */}
                   <div className="flex flex-wrap gap-1.5 mb-6">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="bg-black/40 text-white/90 text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/10 hover:border-[#CCFF00] hover:text-[#CCFF00] transition-colors cursor-default"
+                        className="bg-black/45 text-white/95 text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/15 hover:border-[#CCFF00] hover:text-[#CCFF00] transition-colors cursor-default"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  {/* Action Links with Spring Click Physics */}
+                  {/* Action Links */}
                   <div className="flex items-center gap-2.5 pt-4 border-t border-white/15">
                     {project.demoUrl && project.demoUrl !== '#' ? (
                       <>
@@ -175,9 +176,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                           href={project.demoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#CCFF00] text-black font-black text-xs hover:bg-white transition-colors shadow-md group/btn"
+                          className="min-h-[44px] flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#CCFF00] text-black font-black text-xs sm:text-sm hover:bg-white transition-colors shadow-md group/btn"
                         >
-                          <ExternalLink className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                          <ExternalLink className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" aria-hidden="true" />
                           <span>Live Demo</span>
                         </motion.a>
                         <motion.a
@@ -186,7 +187,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/15 border border-white/25 text-white font-black text-xs hover:bg-white hover:text-black transition-colors"
+                          className="min-h-[44px] flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-white/15 border border-white/25 text-white font-black text-xs sm:text-sm hover:bg-white hover:text-black transition-colors"
                         >
                           <Github className="w-4 h-4" />
                           <span>Source Code</span>
@@ -199,7 +200,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-black text-xs hover:bg-[#CCFF00] transition-colors shadow-md"
+                        className="min-h-[44px] flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-black text-xs sm:text-sm hover:bg-[#CCFF00] transition-colors shadow-md"
                       >
                         <Github className="w-4 h-4" />
                         <span>Source Code</span>
@@ -226,7 +227,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             href={portfolioConfig.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-8 py-3 sm:py-4 rounded-full bg-[#CCFF00] text-black font-black text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-xl hover:shadow-[0_0_25px_rgba(204,255,0,0.6)] max-w-full"
+            className="min-h-[44px] inline-flex items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-8 py-3 sm:py-4 rounded-full bg-[#CCFF00] text-black font-black text-xs sm:text-sm md:text-base hover:bg-white transition-all shadow-xl hover:shadow-[0_0_25px_rgba(204,255,0,0.6)] max-w-full"
           >
             <Github className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
             <span className="sm:hidden">Inspect Repositories (@{portfolioConfig.githubUsername})</span>

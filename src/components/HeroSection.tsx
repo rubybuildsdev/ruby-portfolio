@@ -5,7 +5,7 @@ import { ArrowGreenLeft, ArrowGreenRight, CircularBadge } from './SvgAccents';
 import { GithubIcon, ReactIcon, NodeJsIcon } from './Icons';
 import { Typewriter } from './Typewriter';
 
-// Component for typewriter-style heading reveal
+// Component for typewriter-style heading reveal (renders as span inside unified h1)
 const TypingHeading: React.FC<{
   text: string;
   delayMs?: number;
@@ -38,18 +38,19 @@ const TypingHeading: React.FC<{
   const isTyping = displayedLength < text.length;
 
   return (
-    <div className="inline-flex items-baseline">
-      <h1 className={`${className} ${textColorClass} hero-heading-shadow`}>
+    <span className="inline-flex items-baseline">
+      <span className={`${className} ${textColorClass} hero-heading-shadow`}>
         {text.slice(0, displayedLength)}
-      </h1>
+      </span>
       {isTyping && (
         <span
+          aria-hidden="true"
           className="text-[#CCFF00] font-black text-[clamp(2.5rem,8vw,110px)] leading-none ml-1 animate-pulse hero-heading-shadow"
         >
           _
         </span>
       )}
-    </div>
+    </span>
   );
 };
 
@@ -75,7 +76,6 @@ function useTilt3D(maxDeg: number = 12) {
       transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       transition: 'transform 0.1s ease-out',
     });
-    // Sheen moves opposite to mouse
     setSheenPos({ x: 50 - dx * 40, y: 50 - dy * 40 });
   }, [maxDeg]);
 
@@ -107,7 +107,6 @@ export const HeroSection: React.FC = () => {
     };
   }, []);
 
-  // Tilt hooks for the two glass cards
   const card1Tilt = useTilt3D(12);
   const card2Tilt = useTilt3D(12);
 
@@ -119,7 +118,7 @@ export const HeroSection: React.FC = () => {
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex items-center gap-2 sm:gap-2.5 bg-black/40 backdrop-blur-md border border-white/30 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full mb-6 sm:mb-8 md:mb-12 text-white text-xs md:text-sm font-semibold shadow-xl max-w-[calc(100vw-2rem)]"
+        className="glass-fallback-dark flex items-center gap-2 sm:gap-2.5 bg-black/40 backdrop-blur-md border border-white/30 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full mb-6 sm:mb-8 md:mb-12 text-white text-xs md:text-sm font-semibold shadow-xl max-w-[calc(100vw-2rem)]"
       >
         <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#CCFF00] animate-ping shrink-0"></span>
         <Typewriter
@@ -144,8 +143,8 @@ export const HeroSection: React.FC = () => {
       {/* Massive Typography & Elements Container */}
       <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center z-10 mt-4 md:mt-8 mb-12 md:mb-16">
 
-        {/* Text Stack with Typing Animation */}
-        <div className="w-full flex flex-col items-center relative z-10 space-y-1 md:space-y-3">
+        {/* Unified Single H1 with Individually Draggable Words */}
+        <h1 className="w-full flex flex-col items-center relative z-10 space-y-1 md:space-y-3 m-0 p-0">
 
           {/* CODE (Types in first) */}
           <motion.div
@@ -163,9 +162,7 @@ export const HeroSection: React.FC = () => {
             }}
             onDragStart={onFirstDrag}
             className="w-full flex justify-start pl-[4%] sm:pl-[8%] md:pl-[22%] relative z-30 cursor-grab"
-            style={{
-              touchAction: 'none',
-            }}
+            style={{ touchAction: 'none' }}
           >
             <TypingHeading
               text={portfolioConfig.hero.heading1}
@@ -192,9 +189,7 @@ export const HeroSection: React.FC = () => {
             }}
             onDragStart={onFirstDrag}
             className="w-full flex justify-center relative z-20 cursor-grab"
-            style={{
-              touchAction: 'none',
-            }}
+            style={{ touchAction: 'none' }}
           >
             <TypingHeading
               text={portfolioConfig.hero.heading2}
@@ -221,9 +216,7 @@ export const HeroSection: React.FC = () => {
             }}
             onDragStart={onFirstDrag}
             className="w-full flex justify-start pl-[8%] sm:pl-[14%] md:pl-[28%] relative z-10 cursor-grab"
-            style={{
-              touchAction: 'none',
-            }}
+            style={{ touchAction: 'none' }}
           >
             <TypingHeading
               text={portfolioConfig.hero.heading3}
@@ -234,13 +227,13 @@ export const HeroSection: React.FC = () => {
             />
           </motion.div>
 
-        </div>
+        </h1>
 
         {/* Interaction Hint Badge */}
         <motion.p
           initial={{ opacity: 0.7 }}
-          animate={{ opacity: hasInteracted ? 0 : 0.7 }}
-          className="text-white/40 text-xs font-medium mt-6 tracking-wide"
+          animate={{ opacity: hasInteracted ? 0 : 0.75 }}
+          className="text-white/75 text-xs font-medium mt-6 tracking-wide"
         >
           Drag and fling the words to test the physics
         </motion.p>
@@ -248,7 +241,7 @@ export const HeroSection: React.FC = () => {
         {/* Absolute Overlays (Cards, Arrows, Badge) */}
         <div className="absolute inset-0 w-full h-full pointer-events-none">
 
-          {/* Floating Glass Card 1 (Bottom Left): Liquid Glass with React & Node.js */}
+          {/* Floating Glass Card 1 (Bottom Left) */}
           <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -274,21 +267,19 @@ export const HeroSection: React.FC = () => {
               style={{ touchAction: 'none' }}
             >
               <div
-                className="w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[-8deg] sm:rotate-[-10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
+                className="glass-fallback-bright w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[-8deg] sm:rotate-[-10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
                 style={{
                   ...card1Tilt.tiltStyle,
                   backdropFilter: 'blur(16px)',
                   WebkitBackdropFilter: 'blur(16px)',
                 }}
               >
-                {/* Specular sheen overlay */}
                 <div
                   className="absolute inset-0 rounded-[1.6rem] sm:rounded-[2rem] opacity-15 pointer-events-none"
                   style={{
                     background: `radial-gradient(circle at ${card1Tilt.sheenPos.x}% ${card1Tilt.sheenPos.y}%, rgba(255,255,255,0.8) 0%, transparent 60%)`,
                   }}
                 />
-                {/* React & Node.js Icons Container */}
                 <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-black/85 rounded-full flex items-center justify-center mb-2 sm:mb-3 shadow-inner border-2 sm:border-[3px] border-white/50 overflow-hidden gap-1 sm:gap-1.5 p-1.5 sm:p-2 group-hover:scale-110 transition-transform">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 flex items-center justify-center text-[#61DAFB] group-hover:rotate-45 transition-transform duration-500">
                     <ReactIcon className="w-full h-full" />
@@ -313,7 +304,7 @@ export const HeroSection: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* Floating Glass Card 2 (Top Right): Liquid Glass with GitHub Octocat & Visible Handle */}
+          {/* Floating Glass Card 2 (Top Right) */}
           <motion.div
             animate={{ y: [0, -20, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
@@ -357,21 +348,19 @@ export const HeroSection: React.FC = () => {
                     e.preventDefault();
                   }
                 }}
-                className="w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[8deg] sm:rotate-[10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
+                className="glass-fallback-bright w-40 sm:w-48 md:w-56 aspect-[3/3.6] bg-white/20 backdrop-blur-xl border border-white/40 rounded-[1.6rem] sm:rounded-[2rem] p-4 sm:p-5 flex flex-col items-center justify-center rotate-[8deg] sm:rotate-[10deg] shadow-2xl hover:rotate-0 hover:bg-white/30 transition-all duration-500 group hover:shadow-[0_20px_40px_rgba(204,255,0,0.25)] relative overflow-hidden"
                 style={{
                   ...card2Tilt.tiltStyle,
                   backdropFilter: 'blur(16px)',
                   WebkitBackdropFilter: 'blur(16px)',
                 }}
               >
-                {/* Specular sheen overlay */}
                 <div
                   className="absolute inset-0 rounded-[1.6rem] sm:rounded-[2rem] opacity-15 pointer-events-none"
                   style={{
                     background: `radial-gradient(circle at ${card2Tilt.sheenPos.x}% ${card2Tilt.sheenPos.y}%, rgba(255,255,255,0.8) 0%, transparent 60%)`,
                   }}
                 />
-                {/* Official GitHub Icon in Circular Avatar */}
                 <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-black rounded-full flex items-center justify-center mb-2 sm:mb-3 shadow-inner border-2 sm:border-[3px] border-white/50 overflow-hidden text-white group-hover:scale-110 group-hover:bg-[#CCFF00] group-hover:text-black transition-all duration-300">
                   <GithubIcon className="w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 transition-colors" />
                 </div>

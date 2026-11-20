@@ -25,7 +25,7 @@ export const ProfileAvatar: React.FC = () => {
   const [greeting, setGreeting] = useState<string | null>(null);
   const glowOpacity = useMotionValue(0);
 
-  // Scroll-linked parallax: the avatar drifts a little slower/faster than the page
+  // Scroll-linked parallax
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start'],
@@ -86,7 +86,7 @@ export const ProfileAvatar: React.FC = () => {
   return (
     <div ref={sectionRef} className="relative w-full flex flex-col items-center select-none">
       <motion.div style={{ y: parallaxY }} className="relative w-full flex flex-col items-center">
-        {/* Idle breathing float — subtle, constant, paused for reduced-motion users */}
+        {/* Idle breathing float — paused for reduced-motion / Lite Mode */}
         <motion.div
           animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
           transition={
@@ -118,7 +118,7 @@ export const ProfileAvatar: React.FC = () => {
             )}
           </AnimatePresence>
 
-          {/* Neo-Brutalist Frame Container with Lift & Shadow Expansion Hover */}
+          {/* Neo-Brutalist Frame Container */}
           <motion.div
             ref={frameRef}
             whileHover={{ y: -6 }}
@@ -148,12 +148,13 @@ export const ProfileAvatar: React.FC = () => {
 
             {/* Layer 3: Main Avatar Box Frame with 3px Black Border */}
             <div className="relative w-full h-full rounded-[1.8rem] sm:rounded-[2.3rem] border-3 border-black bg-[#121624] overflow-hidden shadow-2xl z-10 flex items-center justify-center">
-              {/* Profile Photo - Clean, crisp, no grid overlay, no cutout fringe */}
               <img
                 src="/images/profile/avatar-optimized.jpg"
                 alt="Ruby Profile Avatar"
                 className="w-full h-full object-cover object-center relative z-10 group-hover:scale-102 transition-transform duration-500"
                 loading="eager"
+                decoding="async"
+                fetchPriority="high"
               />
             </div>
           </motion.div>

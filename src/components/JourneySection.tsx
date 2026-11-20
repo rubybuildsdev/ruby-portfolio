@@ -5,15 +5,15 @@ import { Compass, Milestone } from 'lucide-react';
 
 export const JourneySection: React.FC = () => {
   return (
-    <section 
-      id="journey" 
+    <section
+      id="journey"
       data-brightness="bright"
       className="bg-white text-black py-24 px-6 md:px-10 relative z-20 w-full border-t border-gray-100 overflow-hidden scroll-mt-20 md:scroll-mt-24"
     >
       <div className="max-w-4xl mx-auto">
-        
-        {/* Header with Scroll Fade-in */}
-        <motion.div 
+
+        {/* Header */}
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -21,21 +21,21 @@ export const JourneySection: React.FC = () => {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 bg-[#0038FF] text-white font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider mb-3 shadow-md hover:scale-105 transition-transform cursor-default">
-            <Compass className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '10s' }} />
+            <Compass className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '10s' }} aria-hidden="true" />
             <span>Learning Timeline</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
             MY JOURNEY SO FAR
           </h2>
-          <p className="text-black/60 font-semibold text-sm md:text-base max-w-lg mx-auto mt-2">
+          <p className="text-neutral-700 font-semibold text-sm md:text-base max-w-lg mx-auto mt-2">
             No overnight shortcuts, no guru bootcamps — just building small things daily, breaking them, and figuring out why.
           </p>
         </motion.div>
 
-        {/* Timeline List with Staggered Scroll Entrance */}
+        {/* Timeline List */}
         <div className="relative pl-6 md:pl-10 border-l-4 border-[#0038FF]/20 space-y-8 sm:space-y-10 ml-3 sm:ml-4 md:ml-6">
           {portfolioConfig.journey.map((step, idx) => (
-            <motion.div 
+            <motion.div
               key={step.title}
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -55,15 +55,15 @@ export const JourneySection: React.FC = () => {
                   <span className="text-xs font-black uppercase tracking-wider text-[#0038FF] group-hover:text-black transition-colors">
                     {step.period}
                   </span>
-                  <div className="inline-flex items-center gap-1 text-[11px] font-bold text-gray-500 bg-white px-2.5 py-0.5 rounded-full border border-gray-200 self-start sm:self-auto">
-                    <Milestone className="w-3.5 h-3.5 text-[#0038FF]" />
+                  <div className="inline-flex items-center gap-1 text-xs font-bold text-neutral-700 bg-white px-2.5 py-0.5 rounded-full border border-gray-200 self-start sm:self-auto">
+                    <Milestone className="w-3.5 h-3.5 text-[#0038FF]" aria-hidden="true" />
                     <span>Stage 0{idx + 1}</span>
                   </div>
                 </div>
                 <h3 className="text-base sm:text-lg md:text-xl font-black text-black mb-1.5 sm:mb-2 group-hover:text-[#0038FF] transition-colors">
                   {step.title}
                 </h3>
-                <p className="text-black/70 text-xs md:text-sm leading-relaxed font-medium">
+                <p className="text-neutral-700 text-sm leading-relaxed font-medium">
                   {step.description}
                 </p>
               </div>
