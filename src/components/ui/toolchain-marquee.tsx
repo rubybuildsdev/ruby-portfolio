@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Pause, Play } from "lucide-react";
 import {
   motion,
   useAnimationFrame,
@@ -27,7 +26,6 @@ export type ToolchainMarqueeProps = Omit<
   stacks?: ToolchainItem[][];
   duration?: number;
   rows?: number;
-  showControl?: boolean;
 };
 
 function ToolchainGroup({
@@ -148,12 +146,10 @@ export function ToolchainMarquee({
   duration = 22,
   items,
   rows = 2,
-  showControl = true,
   stacks,
   ...props
 }: ToolchainMarqueeProps) {
   const reduceMotion = Boolean(useReducedMotion());
-  const [paused, setPaused] = React.useState(false);
   const rowCount = Math.max(1, Math.min(8, Math.round(rows)));
   const customStacks = stacks?.filter((stack) => stack.length > 0);
   const resolvedStacks = customStacks?.length
@@ -161,10 +157,6 @@ export function ToolchainMarquee({
     : items?.length
       ? [items]
       : [];
-
-  function togglePlayback() {
-    setPaused((prev) => !prev);
-  }
 
   if (resolvedStacks.length === 0) return null;
 
@@ -182,23 +174,11 @@ export function ToolchainMarquee({
             duration={duration * (1 + ((index % 3) - 1) * 0.06)}
             items={resolvedStacks[index % resolvedStacks.length]}
             key={index}
-            paused={paused}
+            paused={false}
             reduceMotion={reduceMotion}
           />
         ))}
       </div>
-
-      {!reduceMotion && showControl && (
-        <button
-          className={styles.control}
-          type="button"
-          onClick={togglePlayback}
-          aria-label={paused ? "Play tool animation" : "Pause tool animation"}
-          aria-pressed={paused}
-        >
-          {paused ? <Play className={styles.controlIcon} /> : <Pause className={styles.controlIcon} />}
-        </button>
-      )}
     </div>
   );
 }

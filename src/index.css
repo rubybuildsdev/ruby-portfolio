@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@utility line-clamp-* {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: --value(integer);
+  line-clamp: --value(integer);
+}
+
 html, body, #root {
   margin: 0;
   padding: 0;
