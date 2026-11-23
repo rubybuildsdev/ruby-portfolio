@@ -432,7 +432,9 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={closeModal}
-            className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+            className={`fixed inset-0 z-50 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 ${
+              theme === 'cyber' ? 'bg-black/75' : 'bg-[#00145C]/70'
+            }`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-project-title"
@@ -445,18 +447,23 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               exit={{ opacity: 0, scale: 0.94, y: 16 }}
               transition={{ type: 'spring', stiffness: 320, damping: 26 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass-fallback-dark relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2rem] border-2 border-[#CCFF00] bg-[#0B1020]/95 text-white p-6 sm:p-8 shadow-[0_24px_70px_rgba(0,0,0,0.65)]"
+              className={`relative w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden rounded-[2rem] border-2 border-[#CCFF00] text-white backdrop-blur-xl shadow-[0_24px_70px_rgba(0,0,0,0.65)] ${
+                theme === 'cyber'
+                  ? 'glass-fallback-dark bg-[#0B1020]/95'
+                  : 'glass-fallback-card bg-[#00229E]/95'
+              }`}
             >
-              {/* Close Button */}
+              {/* Close Button (pinned outside scroll flow so it stays crisp) */}
               <button
                 type="button"
                 onClick={closeModal}
                 aria-label="Close project details"
-                className="min-w-[44px] min-h-[44px] absolute top-4 right-4 flex items-center justify-center rounded-full bg-white/10 hover:bg-[#CCFF00] hover:text-black text-white transition-colors cursor-pointer"
+                className="min-w-[44px] min-h-[44px] absolute top-4 right-4 z-20 flex items-center justify-center rounded-full bg-black/35 border border-white/15 hover:bg-[#CCFF00] hover:text-black hover:border-[#CCFF00] text-white transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
 
+              <div className="overflow-y-auto modal-scrollbar p-6 sm:p-8">
               <div className="pr-12 mb-4 flex flex-wrap items-center gap-2">
                 <CategoryBadge category={selectedProject.category} />
                 {selectedProject.demoUrl && <DeployedBadge />}
@@ -534,6 +541,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                   <Github className="w-4 h-4" />
                   <span>View Source Code</span>
                 </a>
+              </div>
               </div>
             </motion.div>
           </motion.div>

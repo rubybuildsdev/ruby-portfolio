@@ -694,7 +694,7 @@ export const TerminalPlayground: React.FC<TerminalPlaygroundProps> = ({ theme, o
           <div
             ref={logsContainerRef}
             onClick={() => inputRef.current?.focus()}
-            className="relative p-4 md:p-6 min-h-[250px] sm:min-h-[300px] max-h-[380px] sm:max-h-[440px] overflow-y-auto space-y-3 font-mono cursor-text scroll-smooth"
+            className="relative p-4 md:p-6 min-h-[250px] sm:min-h-[300px] max-h-[380px] sm:max-h-[440px] overflow-y-auto modal-scrollbar space-y-3 font-mono cursor-text scroll-smooth"
           >
             {showSparkBurst && (
               <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden z-20">
