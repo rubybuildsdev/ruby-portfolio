@@ -14,13 +14,50 @@
     <meta property="og:url" content="https://rubyporto.vercel.app/" />
     <meta property="og:title" content="RUBY | Full-Stack Web Developer" />
     <meta property="og:description" content="Personal portfolio of Ruby - Full-Stack Web Developer. Building practical web applications, 3D simulations, and AI integrations." />
-    <meta property="og:image" content="https://rubyporto.vercel.app/images/profile/avatar-optimized.jpg" />
+    <meta property="og:image" content="https://rubyporto.vercel.app/images/og-banner.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RUBY — Full-Stack Web Developer Portfolio" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="RUBY | Full-Stack Web Developer" />
     <meta name="twitter:description" content="Personal portfolio of Ruby - Full-Stack Web Developer. Building practical web applications, 3D simulations, and AI integrations." />
-    <meta name="twitter:image" content="https://rubyporto.vercel.app/images/profile/avatar-optimized.jpg" />
+    <meta name="twitter:image" content="https://rubyporto.vercel.app/images/og-banner.png" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "name": "Muhammad Ruby",
+            "alternateName": "RUBY",
+            "url": "https://rubyporto.vercel.app/",
+            "image": "https://rubyporto.vercel.app/images/profile/avatar-optimized.webp",
+            "jobTitle": "Full-Stack Web Developer",
+            "sameAs": [
+              "https://github.com/rubybuildsdev"
+            ],
+            "knowsAbout": [
+              "React",
+              "TypeScript",
+              "Node.js",
+              "Three.js",
+              "PostgreSQL",
+              "AI Integrations"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "name": "RUBY | Full-Stack Web Developer",
+            "url": "https://rubyporto.vercel.app/",
+            "description": "Personal portfolio of Ruby - Full-Stack Web Developer. Building practical web applications, 3D simulations, and AI integrations."
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="bg-[#0038FF] text-white antialiased overflow-x-clip selection:bg-[#CCFF00] selection:text-black">
     <div id="root"></div>

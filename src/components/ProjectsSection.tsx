@@ -77,6 +77,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         loop
         muted
         playsInline
+        preload="metadata"
         aria-label={project.title}
         className="w-full h-full object-cover object-top group-hover/img:scale-108 transition-transform duration-700 ease-out"
       />
@@ -472,6 +473,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       loop
                       muted
                       playsInline
+                      preload="metadata"
+                      aria-label={selectedProject.title}
                       className="w-full h-full object-cover object-top"
                     />
                   ) : selectedProject.image ? (

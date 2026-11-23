@@ -175,8 +175,10 @@ export const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ isOptimized = fals
             {/* Layer 3: Main Flat Avatar Box Frame */}
             <div className="relative w-full h-full rounded-[1.8rem] sm:rounded-[2.3rem] border-3 border-black bg-[#121624] overflow-hidden shadow-2xl z-10 flex items-center justify-center">
               <img
-                src="/images/profile/avatar-optimized.jpg"
+                src="/images/profile/avatar-optimized.webp"
                 alt="Ruby Profile Avatar"
+                width={512}
+                height={512}
                 className="w-full h-full object-cover object-center relative z-10 group-hover:scale-102 transition-transform duration-500"
                 loading="eager"
                 decoding="async"
