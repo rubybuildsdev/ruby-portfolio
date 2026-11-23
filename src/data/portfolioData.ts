@@ -95,7 +95,7 @@ export const portfolioConfig = {
       tags: ["PHP Native", "MySQL", "Bootstrap", "Google OAuth 2.0", "SweetAlert2"],
       githubUrl: "https://github.com/rubybuildsdev/pink-outdoor",
       demoUrl: "",
-      image: "/images/projects/pink-outdoor/project-1-cover.png",
+      image: "/images/projects/pink-outdoor/project-1-cover.webp",
       badge: "FEATURED",
       highlight: "State Machine & Booking Verification"
     },
